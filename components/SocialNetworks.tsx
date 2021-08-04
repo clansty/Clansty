@@ -1,7 +1,7 @@
 import {GithubOutlined, TwitterOutlined} from '@ant-design/icons'
 import {TelegramIcon} from './IconSvgs'
 
-export default () => (
+const SocialNetworks = () => (
     <>
         <a href="https://github.com/Clansty">
             <GithubOutlined/>
@@ -16,3 +16,5 @@ export default () => (
         </>}
     </>
 )
+
+export default SocialNetworks

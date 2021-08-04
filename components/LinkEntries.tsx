@@ -1,7 +1,7 @@
 import styles from '../styles/LinkEntries.module.scss'
 import SocialNetworks from './SocialNetworks'
 
-export default ()=>(
+const LinkEntries = () => (
     <div className={styles.container}>
         <div className={styles.title}>
             你好，这里是凌莞
@@ -23,3 +23,5 @@ export default ()=>(
         </div>
     </div>
 )
+
+export default LinkEntries
