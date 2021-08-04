@@ -10,20 +10,22 @@ export default function Home() {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
     const backgrounds = [styles.background1, styles.background2]
     const [randomBackground, setRandomBackground] = useState('')
+    const [chosenTitle, setChosenTitle] = useState('')
     useEffect(() => {
         setRandomBackground(randomChoose(backgrounds))
+        setChosenTitle(randomChoose(emojiList))
     }, [])
 
     return (
         <div className={classNames(styles.container, randomBackground)}>
             <Head>
-                <title>凌莞{randomChoose(emojiList)}喵～</title>
+                <title>凌莞{chosenTitle}喵～</title>
             </Head>
 
             {LinkEntries()}
 
             <footer className={styles.footer}>
-                {typeof window !== 'undefined' && /lwqwq\.com/.test(location.hostname) &&
+                {process.env.BUILD_FOR_DOMESTIC &&
                 <small>
                     <a href="https://beian.miit.gov.cn/" target="_blank" className={styles.beian}>
                         苏ICP备2020048816号-1

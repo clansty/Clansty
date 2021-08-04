@@ -6,7 +6,7 @@ export default () => (
         <a href="https://github.com/Clansty">
             <GithubOutlined/>
         </a>
-        {typeof window !== 'undefined' && !/lwqwq\.com/.test(location.hostname) && <>
+        {!process.env.BUILD_FOR_DOMESTIC && <>
             <a href="https://twitter.com/Clanstty">
                 <TwitterOutlined/>
             </a>
