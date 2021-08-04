@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "build:domestic": "BUILD_FOR_DOMESTIC=1 next build && next export",
     "start": "next start"
   },
