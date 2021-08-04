@@ -10,12 +10,17 @@ export default function Home() {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
     const backgrounds = [styles.background1, styles.background2]
     const [randomBackground, setRandomBackground] = useState('')
-    useEffect(() => setRandomBackground(randomChoose(backgrounds)), [])
+    const [chosenTitle, setChosenTitle] = useState('')
+    useEffect(() => {
+        setRandomBackground(randomChoose(backgrounds))
+        setChosenTitle(randomChoose(emojiList))
+    }, [])
 
+    console.log(process.env.NEXT_PUBLIC_VERCEL_URL)
     return (
         <div className={classNames(styles.container, randomBackground)}>
             <Head>
-                <title>凌莞{randomChoose(emojiList)}喵～</title>
+                <title>凌莞{chosenTitle}喵～</title>
             </Head>
 
             {LinkEntries()}
