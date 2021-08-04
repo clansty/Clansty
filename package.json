@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
+    "build:domestic": "BUILD_FOR_DOMESTIC=1 next build && next export",
     "start": "next start"
   },
   "dependencies": {
