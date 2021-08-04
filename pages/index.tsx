@@ -4,12 +4,16 @@ import classNames from 'classnames'
 import LinkEntries from '../components/LinkEntries'
 import randomChoose from '../utils/randomChoose'
 import Image from 'next/image'
+import {useEffect, useState} from 'react'
 
 export default function Home() {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
     const backgrounds = [styles.background1, styles.background2]
+    const [randomBackground, setRandomBackground] = useState('')
+    useEffect(() => setRandomBackground(randomChoose(backgrounds)), [])
+
     return (
-        <div className={classNames(styles.container, randomChoose(backgrounds))}>
+        <div className={classNames(styles.container, randomBackground)}>
             <Head>
                 <title>凌莞{randomChoose(emojiList)}喵～</title>
             </Head>
