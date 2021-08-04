@@ -22,6 +22,15 @@
   }
 }
 
+.background2 {
+  background-image: url("https://cdn.lwqwq.com/pic/xiaopenyou-transparent.png");
+  background-size: 500px;
+
+  ::selection {
+    background-color: #7C5A4F;
+  }
+}
+
 .footer {
   flex-direction: column;
   width: 100%;

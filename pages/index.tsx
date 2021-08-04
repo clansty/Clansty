@@ -7,8 +7,9 @@ import Image from 'next/image'
 
 export default function Home() {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
+    const backgrounds = [styles.background1, styles.background2]
     return (
-        <div className={classNames(styles.container, styles.background1)}>
+        <div className={classNames(styles.container, randomChoose(backgrounds))}>
             <Head>
                 <title>凌莞{randomChoose(emojiList)}喵～</title>
             </Head>
