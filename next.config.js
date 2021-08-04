@@ -1,3 +1,6 @@
 module.exports = {
-  reactStrictMode: true,
+    reactStrictMode: true,
+    publicRuntimeConfig: {
+        DOMESTIC: process.env.BUILD_FOR_DOMESTIC,
+    },
 }
