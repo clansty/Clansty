@@ -8,6 +8,11 @@
   box-sizing: content-box;
   background-color: var(--color);
 
+  ::selection{
+    background-color: var(--color);
+    color: #fff;
+  }
+
   .avatar {
     border-right-width: 2px;
     border-right-style: solid;
