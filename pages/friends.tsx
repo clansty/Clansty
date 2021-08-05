@@ -12,15 +12,17 @@ function Friends() {
     useEffect(() => setShuffledList(shuffle(friends)))
 
     return <div className={styles.container}>
-        <div className={styles.title}>
-            好朋友们～
-        </div>
-        <div className={styles.back}>
-            <Link href="/">
-                <a>
-                    <LeftOutlined />
-                </a>
-            </Link>
+        <div className={styles.titlebar}>
+            <div className={styles.title}>
+                好朋友们～
+            </div>
+            <div className={styles.back}>
+                <Link href="/">
+                    <a>
+                        <LeftOutlined/>
+                    </a>
+                </Link>
+            </div>
         </div>
         {shuffledList.map(f => <FriendLinkBox item={f} key={f.name}/>)}
     </div>

@@ -21,27 +21,38 @@
     max-height: 100vh;
   }
 
-  .title {
-    height: 85px;
-    font-size: x-large;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #eaeaea;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #303133;
-  }
-
-  .back {
-    //为了保证标题居中所以返回按钮不嵌入在标题里
+  .titlebar {
+    position: sticky;
     top: 0;
     height: 85px;
-    display: flex;
-    font-size: x-large;
-    position: absolute;
-    padding-left: 10px;
-    align-items: center;
+    z-index: 2333;
+    width: 500px;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #303133;
+    @media screen and (max-width: 500px) {
+      width: 100vw;
+    }
+
+    .title {
+      position: absolute;
+      height: 85px;
+      font-size: x-large;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .back {
+      //为了保证标题居中所以返回按钮不嵌入在标题里
+      top: 0;
+      height: 85px;
+      display: flex;
+      font-size: x-large;
+      position: absolute;
+      padding-left: 10px;
+      align-items: center;
+    }
   }
 }
