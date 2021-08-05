@@ -1,47 +1,28 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.scss'
-import classNames from 'classnames'
-import LinkEntries from '../components/LinkEntries'
-import randomChoose from '../utils/randomChoose'
-import {useEffect, useState} from 'react'
-import getConfig from 'next/config'
+import styles from '../styles/LinkEntries.module.scss'
+import SocialNetworks from '../components/SocialNetworks'
+import Link from 'next/link'
 
 export default function Home() {
-    const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
-    const backgrounds = [styles.background1, styles.background2]
-    const [randomBackground, setRandomBackground] = useState('')
-    const [chosenTitle, setChosenTitle] = useState('')
-    useEffect(() => {
-        setRandomBackground(randomChoose(backgrounds))
-        setChosenTitle(randomChoose(emojiList))
-    }, [])
-
-    return (
-        <div className={classNames(styles.container, randomBackground)}>
-            <Head>
-                <title>凌莞{chosenTitle}喵～</title>
-            </Head>
-
-            {LinkEntries()}
-
-            <footer className={styles.footer}>
-                {getConfig().publicRuntimeConfig?.DOMESTIC ?
-                    <a href="https://beian.miit.gov.cn/" target="_blank" className={styles.beian}>
-                        苏ICP备2020048816号-1
-                    </a>
-                    :
-                    <a
-                        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Hosted on {' '}
-                        <span className={styles.logo}>
-                        <img src="/vercel.svg" alt="Vercel Logo" width={72} height={16}/>
-                    </span>
-                    </a>
-                }
-            </footer>
+    return <div className={styles.container}>
+        <div className={styles.title}>
+            你好，这里是凌莞
         </div>
-    )
+        <a href="https://nyac.at">
+            博客
+            <span>Blog</span>
+        </a>
+        <a href="https://csty.ltd">
+            资源
+            <span>Downloads</span>
+        </a>
+        <Link href="/friends">
+            <a>
+                好朋友们
+                <span>Links</span>
+            </a>
+        </Link>
+        <div className={styles.footer}>
+            {SocialNetworks()}
+        </div>
+    </div>
 }
