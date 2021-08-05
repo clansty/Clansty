@@ -33,4 +33,15 @@
     background-color: rgba(255, 255, 255, 0.2);
     color: #303133;
   }
+
+  .back {
+    //为了保证标题居中所以返回按钮不嵌入在标题里
+    top: 0;
+    height: 85px;
+    display: flex;
+    font-size: x-large;
+    position: absolute;
+    padding-left: 10px;
+    align-items: center;
+  }
 }
