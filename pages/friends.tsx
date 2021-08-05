@@ -6,7 +6,7 @@ import FriendLink from '../types/FriendLink'
 import {useEffect, useState} from 'react'
 
 function Friends() {
-    const [shuffledList, setShuffledList] = useState<FriendLink[]>([])
+    const [shuffledList, setShuffledList] = useState<FriendLink[]>(friends)
     useEffect(() => setShuffledList(shuffle(friends)))
 
     return <div className={styles.container}>
