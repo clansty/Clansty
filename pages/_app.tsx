@@ -23,13 +23,11 @@ function MyApp({Component, pageProps}) {
         </Head>
         <PageSwapper
             node={<Component {...pageProps} />}
-            // mode="out-in"
         >
-            {({style, in: inProp, onEntered, onExited, node}) => (
+            {({in: inProp, onEntered, onExited, node}) => (
                 <CSSTransition
                     className={styles.fade}
                     in={inProp}
-                    style={style}
                     onEntered={onEntered}
                     onExited={onExited}
                     addEndListener={() => {
