@@ -1,10 +1,12 @@
-import '../styles/globals.css'
+import '../styles/globals.scss'
 import styles from '../styles/Home.module.scss'
 import getConfig from 'next/config'
 import classNames from 'classnames'
 import Head from 'next/head'
 import {useEffect, useState} from 'react'
 import randomChoose from '../utils/randomChoose'
+import PageSwapper from '@moxy/react-page-swapper'
+import {CSSTransition} from 'react-transition-group'
 
 function MyApp({Component, pageProps}) {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
@@ -19,7 +21,25 @@ function MyApp({Component, pageProps}) {
         <Head>
             <title>凌莞{chosenTitle}喵～</title>
         </Head>
-        <Component {...pageProps} />
+        <PageSwapper
+            node={<Component {...pageProps} />}
+            // mode="out-in"
+        >
+            {({style, in: inProp, onEntered, onExited, node}) => (
+                <CSSTransition
+                    className={styles.fade}
+                    in={inProp}
+                    style={style}
+                    onEntered={onEntered}
+                    onExited={onExited}
+                    addEndListener={() => {
+                    }}
+                    timeout={600}
+                >
+                    <div>{node}</div>
+                </CSSTransition>
+            )}
+        </PageSwapper>
         <footer className={styles.footer}>
             {getConfig().publicRuntimeConfig?.DOMESTIC ?
                 <a href="https://beian.miit.gov.cn/" target="_blank" className={styles.beian}>

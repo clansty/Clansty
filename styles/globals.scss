@@ -1,0 +1,29 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #EDF8F6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.enter,
+.exit-active,
+.exit-done {
+  opacity: 0;
+  @media screen and (max-width: 500px) {
+    top: -100vh !important;
+  }
+  @media screen and (min-width: 500.001px) {
+    left: -500px !important;
+  }
+}
