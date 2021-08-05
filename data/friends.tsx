@@ -50,6 +50,13 @@ const friends: FriendLink[] = [
         avatar: 'tommy.png',
         url: 'https://www.cnblogs.com/tommymio',
     },
+    {
+        color: '#B62512',
+        name: '黎想的博客 | 圣人不死，大盗不止',
+        desc: '一只很喜欢 1145141919810 的大佬',
+        avatar: 'lixiang.jpg',
+        url: 'https://stblog.penclub.club',
+    },
 ]
 
 export default friends
