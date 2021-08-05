@@ -1,0 +1,36 @@
+.container {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  width: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.1);
+  max-height: calc(100vh - 50px);
+  @media screen and (min-width: 500.001px) {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #eaeaea;
+    min-height: calc(100vh - 50px);
+    height: calc(100vh - 50px);
+  }
+  @media screen and (max-width: 500px) {
+    width: 100vw;
+    max-height: 70vh;
+  }
+
+  .title {
+    height: 85px;
+    font-size: x-large;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #303133;
+  }
+}
