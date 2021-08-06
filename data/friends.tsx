@@ -13,14 +13,14 @@ const friends: FriendLink[] = [
         url: 'https://blog.coelacanthus.moe/',
         desc: 'C10s 大佬！',
         color: '#F45A8D',
-        avatar: 'c10s.ico',
+        avatar: 'c10s.webp',
     },
     {
         name: 'ssr\'s blog',
         url: 'https://leanhe.dev/',
         desc: '静静强强！',
         color: '#36A8ED',
-        avatar: 'ssr.ico',
+        avatar: 'ssr.png',
     },
     {
         url: 'https://fangyuan-neko.github.io/',
