@@ -9,7 +9,7 @@ import {LeftOutlined} from '@ant-design/icons'
 
 function Friends() {
     const [shuffledList, setShuffledList] = useState<FriendLink[]>(friends)
-    useEffect(() => setShuffledList(shuffle(friends)))
+    useEffect(() => setShuffledList(shuffle([...friends])), [])
 
     return <div className={styles.friendContainer}>
         <div className={styles.titlebar}>
