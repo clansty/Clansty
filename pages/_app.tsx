@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react'
 import randomChoose from '../utils/randomChoose'
 import PageSwapper from '@moxy/react-page-swapper'
 import {CSSTransition} from 'react-transition-group'
+import Image from 'next/image'
 
 function MyApp({Component, pageProps}) {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
@@ -52,7 +53,7 @@ function MyApp({Component, pageProps}) {
                 >
                     Hosted on {' '}
                     <span className={styles.logo}>
-                        <img src="/vercel.svg" alt="Vercel Logo" width={72} height={16}/>
+                        <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16}/>
                     </span>
                 </a>
             }
