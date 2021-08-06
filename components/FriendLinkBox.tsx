@@ -1,10 +1,10 @@
 import FriendLink from '../types/FriendLink'
-import styles from '../styles/FriendLinkBox.module.scss'
+import styles from '../styles/Components.module.scss'
 import Image from 'next/image'
 
 export default function FriendLinkBox({item}: { item: FriendLink }) {
     return <a href={item.url} target="_blank">
-        <div className={styles.box}>
+        <div className={styles.friendLinkBox}>
             <div className={styles.avatar}>
                 <Image
                     src={'/friend-avatars/' + item.avatar}

@@ -1,5 +1,5 @@
 import friends from '../data/friends'
-import styles from '../styles/Friends.module.scss'
+import styles from '../styles/Components.module.scss'
 import FriendLinkBox from '../components/FriendLinkBox'
 import shuffle from '../utils/shuffle'
 import FriendLink from '../types/FriendLink'
@@ -11,7 +11,7 @@ function Friends() {
     const [shuffledList, setShuffledList] = useState<FriendLink[]>(friends)
     useEffect(() => setShuffledList(shuffle(friends)))
 
-    return <div className={styles.container}>
+    return <div className={styles.friendContainer}>
         <div className={styles.titlebar}>
             <div className={styles.title}>
                 好朋友们～

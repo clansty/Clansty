@@ -1,0 +1,201 @@
+.linkContainer {
+  position: absolute;
+  left: 100px;
+  width: 300px;
+  height: max-content;
+  top: -60px;
+  bottom: 0;
+  margin: auto;
+  border-radius: 5px;
+  border-color: #eaeaea;
+  border-width: 1px;
+  border-style: solid;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  color: #303133;
+  @media screen and (max-width: 500px) {
+    border-radius: 0;
+    border-color: #eaeaea;
+    border-bottom-width: 1px;
+    border-style: solid;
+    left: 0;
+    width: 100vw;
+    top: 0;
+    margin: 0;
+  }
+
+  > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 50px;
+    border-bottom: #eaeaea 1px solid;
+    border-top: #eaeaea 1px solid;
+    transition: all 0.5s;
+
+    span {
+      font-size: x-small;
+      display: block;
+      color: #606266;
+    }
+  }
+
+  > a:hover {
+    background-color: rgba(255, 255, 255);
+
+    span {
+      color: #303133;
+    }
+  }
+
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    height: 70px;
+    font-size: x-large;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    height: 40px;
+    font-size: large;
+
+    a {
+      transition: all 0.5s;
+      color: #909399;
+      margin: 0 2px;
+    }
+
+    a:hover {
+      color: #303133;
+    }
+  }
+}
+
+.friendLinkBox {
+  display: flex;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--color);
+  margin: 10px 15px;
+  height: 80px;
+  box-sizing: content-box;
+  background-color: var(--color);
+
+  ::selection{
+    background-color: var(--color);
+    color: #fff;
+  }
+
+  .avatar {
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: var(--color);
+    height: 80px;
+    width: 80px;
+    box-sizing: content-box;
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .name {
+      height: 32px;
+      min-height: 32px;
+      max-height: 32px;
+      border-bottom-width: 2px;
+      border-bottom-style: solid;
+      border-bottom-color: var(--color);
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      padding-left: 5px;
+      color: #303133;
+      font-size: smaller;
+    }
+
+    .desc {
+      flex: 1;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: left;
+      align-items: flex-start;
+      padding-left: 5px;
+      padding-top: 5px;
+      color: #454750;
+      font-size: small;
+    }
+  }
+}
+
+.friendContainer {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  width: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.1);
+  max-height: calc(100vh - 50px);
+  @media screen and (min-width: 500.001px) {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #eaeaea;
+    min-height: calc(100vh - 50px);
+    height: calc(100vh - 50px);
+  }
+  @media screen and (max-width: 500px) {
+    width: 100vw;
+    max-height: 100vh;
+  }
+
+  .titlebar {
+    position: sticky;
+    top: 0;
+    height: 85px;
+    z-index: 2333;
+    width: 500px;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #303133;
+    @media screen and (max-width: 500px) {
+      width: 100vw;
+    }
+
+    .title {
+      position: absolute;
+      height: 85px;
+      font-size: x-large;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .back {
+      //为了保证标题居中所以返回按钮不嵌入在标题里
+      top: 0;
+      height: 85px;
+      display: flex;
+      font-size: x-large;
+      position: absolute;
+      padding-left: 10px;
+      align-items: center;
+    }
+  }
+}

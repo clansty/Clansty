@@ -1,9 +1,9 @@
-import styles from '../styles/LinkEntries.module.scss'
+import styles from '../styles/Components.module.scss'
 import SocialNetworks from '../components/SocialNetworks'
 import Link from 'next/link'
 
 export default function Home() {
-    return <div className={styles.container}>
+    return <div className={styles.linkContainer}>
         <div className={styles.title}>
             你好，这里是凌莞
         </div>
