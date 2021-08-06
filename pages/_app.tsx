@@ -19,6 +19,7 @@ function MyApp({Component, pageProps}) {
     }, [])
     return <div className={classNames(styles.container, randomBackground)}>
         <Head>
+            <link rel="icon" type="image/webp" href="/favicon.webp"/>
             <title>凌莞{chosenTitle}喵～</title>
         </Head>
         <PageSwapper
