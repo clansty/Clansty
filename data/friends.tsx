@@ -25,7 +25,7 @@ const friends: FriendLink[] = [
     {
         url: 'https://fangyuan-neko.github.io/',
         name: '方圆喵',
-        desc: <>方圆<b>猫</b>！</>,
+        desc: '方圆猫！',
         avatar: 'fangyuan.jpg',
         color: '#D4D4E0',
     },

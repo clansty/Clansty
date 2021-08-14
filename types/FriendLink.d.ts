@@ -1,7 +1,7 @@
 export default interface FriendLink {
     name: string
-    desc: string | JSX.Element
-    avatar: string | StaticImageData
+    desc: string
+    avatar: string
     url: string
     color: string
 }
