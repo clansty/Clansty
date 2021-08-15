@@ -91,6 +91,51 @@
   box-sizing: content-box;
   background-color: var(--color);
 
+  &.mtfWikiLinkBox {
+    background-image: url('https://cdn.lwqwq.com/pic/Transgender_Pride_flag_rotate.svg');
+    background-size: cover;
+    border-color: transparent;
+    --color: #f5abb9;
+
+    ::selection {
+      color: #5bcffa;
+    }
+
+    .avatar {
+      border-right-color: transparent;
+      background-clip: padding-box;
+    }
+
+    .text {
+      .name {
+        border-bottom-color: transparent;
+        background-clip: padding-box;
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+
+      .desc {
+        .less {
+          display: none;
+        }
+
+        .more {
+          display: unset;
+        }
+
+        @media screen and (max-width: 425px) {
+          .less {
+            display: unset;
+          }
+
+          .more {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+
   ::selection {
     background-color: var(--color);
     color: #fff;

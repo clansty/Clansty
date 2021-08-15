@@ -5,6 +5,7 @@ import shuffle from '../utils/shuffle'
 import Link from 'next/link'
 import {LeftOutlined} from '@ant-design/icons'
 import {GetServerSideProps} from 'next'
+import MtfWikiLinkBox from '../components/MtfWikiLinkBox'
 
 function Friends({friends}) {
     return <div className={styles.friendContainer}>
@@ -21,6 +22,7 @@ function Friends({friends}) {
             </div>
         </div>
         {friends.map(f => <FriendLinkBox item={f} key={f.name}/>)}
+        <MtfWikiLinkBox/>
     </div>
 }
 
