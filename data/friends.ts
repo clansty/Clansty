@@ -45,10 +45,10 @@ const friends: FriendLink[] = [
     },
     {
         color: '#747CA3',
-        name: 'tommymio',
+        name: 'Candy Life',
         desc: '是 tommy 酱！',
         avatar: 'tommy.png',
-        url: 'https://www.cnblogs.com/tommymio',
+        url: 'https://tommy0103.github.io',
     },
     {
         color: '#B62512',
@@ -56,6 +56,27 @@ const friends: FriendLink[] = [
         desc: '一只很喜欢 1145141919810 的大佬',
         avatar: 'lixiang.jpg',
         url: 'https://stblog.penclub.club',
+    },
+    {
+        color: '#76A5CF',
+        name: 'LightQuantum 光量子',
+        desc: '光量子！巨佬！敲可爱！',
+        avatar: 'lightquantum.png',
+        url: 'https://lightquantum.me/',
+    },
+    {
+        color: '#4CA9F5',
+        name: 'Winslow Eric',
+        desc: '喵喵喵！',
+        avatar: 'winslow.png',
+        url: 'https://winsloweric.com/',
+    },
+    {
+        color: '#307910',
+        name: '荆棘的小屋-Thorns\'s Site',
+        desc: '这也是一只大佬！',
+        avatar: 'jsun.png',
+        url: 'https://jsun969.github.io/',
     },
 ]
 
