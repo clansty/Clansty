@@ -91,6 +91,11 @@
   box-sizing: content-box;
   background-color: var(--color);
 
+  &:last-child {
+    //最后一个的 margin 放在 div.groupBox 的 ::after 里，这样 div 之间不会空开
+    margin-bottom: 0;
+  }
+
   &.mtfWikiLinkBox {
     background-image: url('https://cdn.lwqwq.com/pic/Transgender_Pride_flag_rotate.svg');
     background-size: cover;
@@ -134,7 +139,6 @@
       }
     }
   }
-
 
   ::selection {
     background-color: var(--color);
@@ -191,6 +195,7 @@
   top: 0;
   bottom: 0;
   position: absolute;
+  z-index: 1;
   width: 500px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -207,41 +212,53 @@
   @media screen and (max-width: 500px) {
     width: 100vw;
     max-height: 100vh;
+    height: 100vh;
   }
 
-  .titlebar {
-    position: sticky;
+  .scrollBox {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: inherit;
+    width: 100%;
+
+    .groupBox {
+      &::after{
+        content: '';
+        display: block;
+        height: 10px;
+        min-height: 10px;
+      }
+
+      .title {
+        position: sticky;
+        top: 0;
+        height: 85px;
+        z-index: 1;
+        width: 500px;
+        backdrop-filter: blur(5px);
+        background-color: rgba(255, 255, 255, 0.6);
+        color: #303133;
+        font-size: x-large;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @media screen and (max-width: 500px) {
+          width: 100vw;
+        }
+      }
+    }
+  }
+
+  .back {
+    //为了保证标题居中所以返回按钮不嵌入在标题里
     top: 0;
     height: 85px;
-    z-index: 2333;
-    width: 500px;
-    backdrop-filter: blur(5px);
-    background-color: rgba(255, 255, 255, 0.6);
-    color: #303133;
-    @media screen and (max-width: 500px) {
-      width: 100vw;
-    }
-
-    .title {
-      position: absolute;
-      height: 85px;
-      font-size: x-large;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-
-    .back {
-      //为了保证标题居中所以返回按钮不嵌入在标题里
-      top: 0;
-      height: 85px;
-      display: flex;
-      font-size: x-large;
-      position: absolute;
-      padding-left: 10px;
-      align-items: center;
-    }
+    display: flex;
+    font-size: x-large;
+    position: absolute;
+    padding-left: 10px;
+    align-items: center;
+    z-index: 2;
   }
 }
 

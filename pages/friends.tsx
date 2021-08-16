@@ -9,20 +9,27 @@ import MtfWikiLinkBox from '../components/MtfWikiLinkBox'
 
 function Friends({friends}) {
     return <div className={styles.friendContainer}>
-        <div className={styles.titlebar}>
-            <div className={styles.title}>
-                好朋友们～
+        <div className={styles.scrollBox}>
+            <div className={styles.groupBox}>
+                <div className={styles.title}>
+                    好朋友们～
+                </div>
+                {friends.map(f => <FriendLinkBox item={f} key={f.name}/>)}
             </div>
-            <div className={styles.back}>
-                <Link href="/">
-                    <a>
-                        <LeftOutlined/>
-                    </a>
-                </Link>
+            <div className={styles.groupBox}>
+                <div className={styles.title}>
+                    特别感谢！
+                </div>
+                <MtfWikiLinkBox/>
             </div>
         </div>
-        {friends.map(f => <FriendLinkBox item={f} key={f.name}/>)}
-        <MtfWikiLinkBox/>
+        <div className={styles.back}>
+            <Link href="/">
+                <a>
+                    <LeftOutlined/>
+                </a>
+            </Link>
+        </div>
     </div>
 }
 
