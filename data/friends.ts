@@ -72,11 +72,11 @@ const friends: FriendLink[] = [
         url: 'https://winsloweric.com/',
     },
     {
-        color: '#307910',
-        name: '荆棘的小屋-Thorns\'s Site',
-        desc: '这也是一只大佬！',
-        avatar: 'jsun.png',
-        url: 'https://jsun969.github.io/',
+        color: '#A4918A',
+        name: '三日月綾香',
+        desc: '大佬喵喵喵！',
+        avatar: 'ayaka.jpg',
+        url: 'https://ayaka.shn.hk/',
     },
 ]
 
