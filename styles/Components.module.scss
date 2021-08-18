@@ -222,7 +222,7 @@
     width: 100%;
 
     .groupBox {
-      &::after{
+      &::after {
         content: '';
         display: block;
         height: 10px;
@@ -283,5 +283,86 @@
 
   div {
     background-color: unset !important;
+  }
+}
+
+.pgpContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50vw;
+  @media screen and (min-width: 500px) {
+    bottom: 50px;
+  }
+
+  .id {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: #eaeaea;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    color: #303133;
+    font-size: x-large;
+    font-family: Monaco, "JetBrains Mono", Monospaced, monospace;
+    position: absolute;
+    top: 20vh;
+    width: max-content;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 10px 15px;
+  }
+
+  .buttons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    bottom: 15vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 10px;
+      margin: 5px 0;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-color: rgba(234, 234, 234, 0.6);
+      border-radius: 5px;
+      border-width: 1px;
+      border-style: solid;
+      transition: all 0.5s;
+      color: #303133;
+      cursor: pointer;
+
+      &:hover{
+        background-color: rgba(255, 255, 255, 0.7);
+        border-color: rgba(234, 234, 234, 0.8);
+      }
+
+      .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        font-size: small;
+      }
+    }
+  }
+
+  .back {
+    top: 0;
+    height: 85px;
+    display: flex;
+    font-size: x-large;
+    position: absolute;
+    padding-left: 10px;
+    align-items: center;
+    z-index: 2;
   }
 }
