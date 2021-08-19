@@ -21,6 +21,12 @@ export default function Home() {
                 <span>Links</span>
             </a>
         </Link>
+        <Link href="/about">
+            <a>
+                关于我
+                <span>About</span>
+            </a>
+        </Link>
         <div className={styles.footer}>
             {SocialNetworks()}
         </div>

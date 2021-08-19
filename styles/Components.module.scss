@@ -20,6 +20,7 @@
     border-color: #eaeaea;
     border-bottom-width: 1px;
     border-style: solid;
+    background-color: rgba(255, 255, 255, 0.3);
     left: 0;
     width: 100vw;
     top: 0;
@@ -247,18 +248,6 @@
       }
     }
   }
-
-  .back {
-    //为了保证标题居中所以返回按钮不嵌入在标题里
-    top: 0;
-    height: 85px;
-    display: flex;
-    font-size: x-large;
-    position: absolute;
-    padding-left: 10px;
-    align-items: center;
-    z-index: 2;
-  }
 }
 
 .errorContainer {
@@ -343,7 +332,7 @@
       color: #303133;
       cursor: pointer;
 
-      &:hover{
+      &:hover {
         background-color: rgba(255, 255, 255, 0.7);
         border-color: rgba(234, 234, 234, 0.8);
       }
@@ -357,17 +346,6 @@
       }
     }
   }
-
-  .back {
-    top: 0;
-    height: 85px;
-    display: flex;
-    font-size: x-large;
-    position: absolute;
-    padding-left: 10px;
-    align-items: center;
-    z-index: 2;
-  }
 }
 
 .aboutContainer {
@@ -375,22 +353,76 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 500px;
-  @media screen and (max-width: 500px) {
-    width: 100vw;
-  }
-  @media screen and (min-width: 1000px) {
-    width: 50vw;
-  }
+  right: 0;
 
-  .back {
+  .title {
+    position: absolute;
     top: 0;
     height: 85px;
-    display: flex;
+    z-index: 1;
+    width: 100vw;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #303133;
     font-size: x-large;
-    position: absolute;
-    padding-left: 10px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    z-index: 2;
+    @media screen and (min-width: 1000px) {
+      display: none;
+    }
   }
+
+  .content {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
+    @media screen and (max-width: 600px) {
+      top: 0;
+      align-items: flex-start;
+    }
+
+    > div {
+      flex-shrink: 1;
+      padding: 0 80px;
+      max-height: 100%;
+      overflow-y: auto;
+      color: #303133;
+      white-space: nowrap;
+      @media screen and (max-width: 1000px) {
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(5px);
+        width: 100%;
+      }
+      @media screen and (max-width: 950px) {
+        width: 100%;
+      }
+      @media screen and (max-width: 600px) {
+        white-space: unset;
+        padding-top: 85px;
+        max-height: 100vh;
+      }
+      @media screen and (max-width: 500px) {
+        padding: 85px 40px;
+      }
+    }
+  }
+}
+
+.back {
+  top: 0;
+  height: 85px;
+  display: flex;
+  font-size: x-large;
+  position: absolute;
+  padding-left: 10px;
+  align-items: center;
+  z-index: 2;
 }
