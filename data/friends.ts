@@ -78,6 +78,21 @@ const friends: FriendLink[] = [
         avatar: 'ayaka.jpg',
         url: 'https://ayaka.shn.hk/',
     },
+    // {
+    //     //todo
+    //     color: '',
+    //     name: 'Ndoskrnl\'s blog',
+    //     desc: '钱桑小可爱',
+    //     avatar: '',
+    //     url: 'https://blog.ndoskrnl.net/',
+    // },
+    {
+        color: '#00A2E8',
+        name: 'xtl',
+        desc: '天乐大佬',
+        avatar: 'xtl.png',
+        url: 'https://www.xtlsoft.top/',
+    },
 ]
 
 export default friends
