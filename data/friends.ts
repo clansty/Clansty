@@ -32,7 +32,7 @@ const friends: FriendLink[] = [
     {
         name: '洛灵酱的小窝',
         desc: '洛灵酱可爱又强强！！',
-        url: 'https://luoling8192.gitee.io/',
+        url: 'https://luoling8192.top/',
         color: '#FF6C6C',
         avatar: 'luoling.jpg',
     },
