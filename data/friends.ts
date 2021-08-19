@@ -93,6 +93,13 @@ const friends: FriendLink[] = [
         avatar: 'xtl.png',
         url: 'https://www.xtlsoft.top/',
     },
+    {
+        color: '#8B816F',
+        name: 'Estela 山前',
+        desc: '蹦蹦跳跳，仙气飘飘',
+        avatar: 'estela.jpg',
+        url: 'https://estela.cn/',
+    },
 ]
 
 export default friends
