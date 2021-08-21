@@ -11,7 +11,7 @@ export default function Home() {
             博客
             <span>Blog</span>
         </a>
-        <a href="https://csty.ltd">
+        <a href="https://dl.lwqwq.com">
             资源
             <span>Downloads</span>
         </a>
