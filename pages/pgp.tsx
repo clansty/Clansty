@@ -7,6 +7,13 @@ import {CopyToClipboard} from 'react-copy-to-clipboard'
 export default function GpgPage() {
     const [copied, setCopied] = useState(false)
     return <div className={styles.pgpContainer}>
+        <div className={styles.back}>
+            <Link href="/">
+                <a>
+                    <LeftOutlined/>
+                </a>
+            </Link>
+        </div>
         <div className={styles.id} title="00D9 333B 9F76 43C1 D674  53A4 41B3 7208 0BBC B8C1">
             41B3 7208 0BBC B8C1
         </div>
@@ -16,24 +23,17 @@ export default function GpgPage() {
                                  setCopied(true)
                                  setTimeout(() => setCopied(false), 1000)
                              }}>
-                <div>
+                <div tabIndex={0} role="button">
                     <CopyOutlined/>
                     <span className={styles.text}>
                     {copied ? '已复制！' : '复制公钥到剪贴板'}
                     </span>
                 </div>
             </CopyToClipboard>
-            <div onClick={download}>
+            <div onClick={download} tabIndex={0} role="button">
                 <DownloadOutlined/>
                 <span className={styles.text}>下载公钥</span>
             </div>
-        </div>
-        <div className={styles.back}>
-            <Link href="/">
-                <a>
-                    <LeftOutlined/>
-                </a>
-            </Link>
         </div>
     </div>
 }

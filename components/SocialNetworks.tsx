@@ -5,7 +5,7 @@ import Link from 'next/link'
 const SocialNetworks = () => {
     return (
         <>
-            <a onClick={sendMail}>
+            <a onClick={sendMail} tabIndex={0}>
                 <MailOutlined/>
             </a>
             <a href="https://github.com/Clansty">
