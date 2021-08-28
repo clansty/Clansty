@@ -99,6 +99,13 @@ const friends: FriendLink[] = [
         avatar: 'estela.jpg',
         url: 'https://estela.cn/',
     },
+    {
+        color: '#D1B9B3',
+        name: '坊洛酱的小作坊',
+        desc: '是一只可爱的大佬',
+        avatar: 'fangluo.png',
+        url: 'https://fangluo.top/',
+    },
 ]
 
 export default friends
