@@ -106,6 +106,13 @@ const friends: FriendLink[] = [
         avatar: 'fangluo.png',
         url: 'https://fangluo.top/',
     },
+    {
+        color: '#FEECC7',
+        name: '静かな森 | 致虚极，守静笃。',
+        desc: '超级强强的大佬，博客超可爱！',
+        avatar: 'innei.webp',
+        url: 'https://innei.ren/',
+    },
 ]
 
 export default friends
