@@ -10,7 +10,9 @@ export default function AboutContent() {
             <b>凌莞 / Clansty</b>
         </p>
         <p>
-            目前上大二，专业是软件工程
+            目前上大二，专业是
+            <del>软妹工程</del>
+            软件工程
             <Twemoji text="👩‍💻" unicode="1f469-200d-1f4bb"/>
         </p>
         <p>
