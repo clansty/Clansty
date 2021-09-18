@@ -6,7 +6,6 @@ import {useEffect, useState} from 'react'
 import randomChoose from '../utils/randomChoose'
 import PageSwapper from '@moxy/react-page-swapper'
 import {CSSTransition} from 'react-transition-group'
-import Image from 'next/image'
 
 function MyApp({Component, pageProps}) {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
