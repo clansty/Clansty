@@ -113,6 +113,13 @@ const friends: FriendLink[] = [
         avatar: 'innei.webp',
         url: 'https://innei.ren/',
     },
+    {
+        color: '#AD7858',
+        name: 'Menci',
+        desc: '微软大佬！',
+        avatar: 'menci.png',
+        url: 'https://men.ci/',
+    },
 ]
 
 export default friends
