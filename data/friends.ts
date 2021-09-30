@@ -127,6 +127,13 @@ const friends: FriendLink[] = [
         avatar: 'frea.jpg',
         url: 'https://imfrea.com',
     },
+    {
+        color: '#307910',
+        name: '荆棘的小屋 - Thorns\'s Site',
+        desc: '这也是一只大佬！',
+        avatar: 'jsun.png',
+        url: 'https://jsun969.github.io/',
+    },
 ]
 
 export default friends
