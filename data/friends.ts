@@ -120,6 +120,13 @@ const friends: FriendLink[] = [
         avatar: 'menci.png',
         url: 'https://men.ci/',
     },
+    {
+        color: '#8DC0B9',
+        name: 'Frea的博客',
+        desc: '是个大佬',
+        avatar: 'frea.jpg',
+        url: 'https://imfrea.com',
+    },
 ]
 
 export default friends
