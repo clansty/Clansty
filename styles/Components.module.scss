@@ -35,7 +35,7 @@
     flex-direction: column;
     height: 50px;
     border-bottom: #eaeaea 1px solid;
-    transition: all 0.3s;
+    transition: all 0.5s;
 
     span {
       font-size: x-small;
@@ -45,6 +45,10 @@
   }
 
   > a:hover {
+    @-moz-document url-prefix() {
+      background-color: #fff;
+    }
+
     span {
       color: #303133;
     }
