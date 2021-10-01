@@ -2,23 +2,23 @@ import {GithubOutlined, MailOutlined, TwitterOutlined} from '@ant-design/icons'
 import {GnuPGIcon, TelegramIcon} from './IconSvgs'
 import Link from 'next/link'
 
-const SocialNetworks = () => {
+const SocialNetworks = (hoverHandler) => {
     return (
         <>
-            <a onClick={sendMail} tabIndex={0}>
+            <a onClick={sendMail} tabIndex={0} onMouseEnter={hoverHandler} onFocus={hoverHandler}>
                 <MailOutlined/>
             </a>
-            <a href="https://github.com/Clansty">
+            <a href="https://github.com/Clansty" onMouseEnter={hoverHandler} onFocus={hoverHandler}>
                 <GithubOutlined/>
             </a>
-            <a href="https://twitter.com/Clanstty">
+            <a href="https://twitter.com/Clanstty" onMouseEnter={hoverHandler} onFocus={hoverHandler}>
                 <TwitterOutlined/>
             </a>
-            <a href="https://t.me/Clansty">
+            <a href="https://t.me/Clansty" onMouseEnter={hoverHandler} onFocus={hoverHandler}>
                 <TelegramIcon/>
             </a>
             <Link href="/pgp">
-                <a>
+                <a onMouseEnter={hoverHandler} onFocus={hoverHandler}>
                     <GnuPGIcon/>
                 </a>
             </Link>

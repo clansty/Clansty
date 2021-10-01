@@ -35,8 +35,7 @@
     flex-direction: column;
     height: 50px;
     border-bottom: #eaeaea 1px solid;
-    border-top: #eaeaea 1px solid;
-    transition: all 0.5s;
+    transition: all 0.3s;
 
     span {
       font-size: x-small;
@@ -46,8 +45,6 @@
   }
 
   > a:hover {
-    background-color: rgba(255, 255, 255);
-
     span {
       color: #303133;
     }
@@ -60,6 +57,7 @@
     flex-grow: 1;
     height: 70px;
     font-size: x-large;
+    border-bottom: #eaeaea 1px solid;
   }
 
   .footer {
@@ -70,8 +68,13 @@
     height: 40px;
     font-size: large;
 
+    .space{
+      flex-grow: 1;
+      height: 100%;
+    }
+
     a {
-      transition: all 0.5s;
+      transition: all 0.3s;
       color: #909399;
       margin: 0 2px;
       cursor: pointer;
@@ -462,4 +465,22 @@
   padding-left: 10px;
   align-items: center;
   z-index: 2;
+}
+
+.highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  transform: translateX(0px) translateY(70px);
+  opacity: 0;
+  height: 49px;
+  width: 298px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255);
+  z-index: -1;
+  transition: opacity 0.5s ease,
+              transform 0.3s ease,
+              height 0.3s ease,
+              width 0.3s ease;
 }
