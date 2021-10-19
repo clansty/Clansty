@@ -27,12 +27,10 @@ function MyApp({Component, pageProps}) {
         >
             {({in: inProp, onEntered, onExited, node}) => (
                 <CSSTransition
-                    className={styles.fade}
+                    className={['Posts'].includes(node.type.name) ? '' : 'fade'}
                     in={inProp}
                     onEntered={onEntered}
                     onExited={onExited}
-                    addEndListener={() => {
-                    }}
                     timeout={600}
                 >
                     <div>{node}</div>

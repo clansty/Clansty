@@ -17,14 +17,32 @@ a {
   box-sizing: border-box;
 }
 
+.fade {
+  transition: all 0.6s;
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  &.enter,
+  &.exit-active,
+  &.exit-done {
+    opacity: 0;
+    @media screen and (max-width: 500px) {
+      top: -100vh !important;
+    }
+    @media screen and (min-width: 500.001px) {
+      left: -500px !important;
+    }
+  }
+}
+
 .enter,
 .exit-active,
 .exit-done {
-  opacity: 0;
-  @media screen and (max-width: 500px) {
-    top: -100vh !important;
-  }
-  @media screen and (min-width: 500.001px) {
-    left: -500px !important;
+  .blogHeader {
+    opacity: 0;
+    transform: translateY(-40px);
   }
 }

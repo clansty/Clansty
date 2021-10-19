@@ -1,11 +1,12 @@
 import {InferGetStaticPropsType} from 'next'
 import allPosts from '../utils/allPosts'
 import PostsIndexItem from '../components/PostsIndexItem'
+import BlogLayout from '../layouts/BlogLayout'
 
 export default function Posts({posts}: InferGetStaticPropsType<typeof getStaticProps>) {
-    return <div>
+    return <BlogLayout>
         {posts.map(e => <PostsIndexItem post={e} key={e.path}/>)}
-    </div>
+    </BlogLayout>
 }
 
 export const getStaticProps = async () => {

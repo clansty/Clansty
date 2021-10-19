@@ -1,5 +1,5 @@
 export default interface PostInfo {
-    name: string
+    title: string
     desc: string
     date: string
     banner?: string

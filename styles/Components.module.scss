@@ -488,3 +488,44 @@
               height 0.3s ease,
               width 0.3s ease;
 }
+
+.blogLayout{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  @media (min-width: 900px) {
+    width: 900px;
+    margin: 0 auto;
+  }
+
+  .header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    transition: all 0.6s;
+    display: flex;
+    color: #606266;
+
+    .back{
+      height: 40px;
+      padding-left: 5px;
+    }
+  }
+
+  .body{
+    padding: 45px 5px 5px 5px;
+    height: 100vh;
+    overflow: auto;
+  }
+
+  .postItem{
+
+  }
+}
