@@ -16,5 +16,5 @@ for (const postPath of postPaths) {
     posts.push(post)
 }
 
-posts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 export default posts
