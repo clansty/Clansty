@@ -27,7 +27,7 @@ function MyApp({Component, pageProps}) {
         >
             {({in: inProp, onEntered, onExited, node}) => (
                 <CSSTransition
-                    className={['Posts'].includes(node.type.name) ? '' : 'fade'}
+                    className={node.props?.isInBlog ? '' : 'fade'}
                     in={inProp}
                     onEntered={onEntered}
                     onExited={onExited}

@@ -3,5 +3,5 @@ export default interface PostInfo {
     desc: string
     date: string
     banner?: string
-    path: string
+    slug: string
 }

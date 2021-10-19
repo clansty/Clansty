@@ -10,7 +10,7 @@ export default function BlogHeader({postTitle}: { postTitle?: string }) {
                     <LeftOutlined/>
                 </a>
             </Link>
-            {postTitle}
         </div>
+        {postTitle}
     </div>
 }

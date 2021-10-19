@@ -4,7 +4,7 @@ import styles from '../styles/Components.module.scss'
 import formatDate from '../utils/formatDate'
 
 export default function PostsIndexItem({post, index}: { post: PostInfo, index: number }) {
-    return <Link href={`/posts/${post.path}`}>
+    return <Link href={`/posts/${post.slug}`}>
         <a>
             <div className={`${styles.postItem} postItem`} style={{transitionDelay: `${index * 0.1}s`}}>
                 <div className={styles.title}>
