@@ -8,10 +8,8 @@ const posts: PostInfo[] = []
 
 for (const postPath of postPaths) {
     const metaPath = path.join('posts', postPath, 'meta.yaml')
-    const contentPath = path.join('posts', postPath, 'content.md')
 
     const post: PostInfo = YAML.parse(fs.readFileSync(metaPath, 'utf-8'))
-    post.contentMd = fs.readFileSync(contentPath, 'utf-8')
     post.path = postPath
     posts.push(post)
 }

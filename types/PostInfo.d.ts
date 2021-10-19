@@ -3,6 +3,5 @@ export default interface PostInfo {
     desc: string
     date: string
     banner?: string
-    contentMd: string
     path: string
 }
