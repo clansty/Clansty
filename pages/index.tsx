@@ -55,6 +55,6 @@ export default function Home() {
     function leave() {
         timeOutId && clearTimeout(timeOutId)
         highlightRef.current.style.opacity = '0'
-        timeOutId = setTimeout(() => highlightRef.current.style.display = 'none', 500)
+        timeOutId = setTimeout(() => highlightRef.current && (highlightRef.current.style.display = 'none'), 500)
     }
 }

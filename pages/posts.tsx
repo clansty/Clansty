@@ -5,7 +5,7 @@ import BlogLayout from '../layouts/BlogLayout'
 
 export default function Posts({posts}: InferGetStaticPropsType<typeof getStaticProps>) {
     return <BlogLayout>
-        {posts.map(e => <PostsIndexItem post={e} key={e.path}/>)}
+        {posts.map((e, i) => <PostsIndexItem post={e} key={e.path} index={i}/>)}
     </BlogLayout>
 }
 

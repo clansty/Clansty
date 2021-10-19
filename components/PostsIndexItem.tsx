@@ -3,13 +3,14 @@ import Link from 'next/link'
 import styles from '../styles/Components.module.scss'
 import formatDate from '../utils/formatDate'
 
-export default function PostsIndexItem({post}: { post: PostInfo }) {
+export default function PostsIndexItem({post, index}: { post: PostInfo, index: number }) {
     return <Link href={`/posts/${post.path}`}>
         <a>
-            <div className={styles.postItem}>
+            <div className={`${styles.postItem} postItem`} style={{transitionDelay: `${index * 0.1}s`}}>
                 <div className={styles.title}>
                     {post.title}
                 </div>
+                {post.banner && <img src={post.banner} alt={post.title} className={styles.banner}/>}
                 <div className={styles.date}>
                     {formatDate('yyyy/MM/dd', new Date(post.date))}
                 </div>
