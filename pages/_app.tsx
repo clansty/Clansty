@@ -9,7 +9,7 @@ import {CSSTransition} from 'react-transition-group'
 
 function MyApp({Component, pageProps}) {
     const emojiList = ['(≧▽≦)', '( ╹▽╹ )', '(・∀・)']
-    const backgrounds = [styles.background1, styles.background2]
+    const backgrounds = [styles.background1, styles.background2, styles.background3]
     const [randomBackground, setRandomBackground] = useState('')
     const [chosenTitle, setChosenTitle] = useState('')
     useEffect(() => {

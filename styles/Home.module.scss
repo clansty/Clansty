@@ -32,6 +32,16 @@
   }
 }
 
+.background3 {
+  background-image: url("https://cdn.lwqwq.com/pic/xpy-next");
+  background-size: 500px;
+
+  ::selection {
+    background-color: #B68E97;
+    color: #eaeaea;
+  }
+}
+
 .footer {
   flex-direction: column;
   width: 100%;
