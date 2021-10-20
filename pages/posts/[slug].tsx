@@ -6,6 +6,7 @@ import BlogLayout from '../../layouts/BlogLayout'
 import ReactMarkdown from 'react-markdown'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {materialOceanic} from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import Head from 'next/head'
 
 const components = {
     code({node, inline, className, children, ...props}) {
@@ -28,6 +29,9 @@ const components = {
 
 export default function SinglePost({meta, content}: { meta: PostInfo, content: string }) {
     return <BlogLayout postTitle={meta.title}>
+        <Head>
+            <title>{meta.title} — 凌莞咕噜咕噜～</title>
+        </Head>
         <div className="postContent">
             {/* @ts-ignore */}
             <ReactMarkdown components={components}>{content}</ReactMarkdown>
