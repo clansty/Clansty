@@ -529,7 +529,7 @@
     overflow: hidden;
   }
 
-  .postList{
+  .postList {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -547,10 +547,20 @@
       backdrop-filter: blur(5px);
     }
 
+    &:hover {
+      .title > span {
+        box-shadow: inset 0 -0.1666666667em 0 0 #fff, inset 0 -0.3333333333em 0 0 #A7F3D0;
+      }
+    }
+
     .title {
       color: #303133;
       font-size: x-large;
       font-weight: 500;
+
+      span{
+        transition: box-shadow 0.3s;
+      }
     }
 
     .date {
@@ -563,17 +573,17 @@
       color: #606266;
     }
 
-    .banner{
+    .banner {
       width: 100%;
       max-height: 30vh;
       object-fit: cover;
       margin-top: 0.6em;
     }
 
-    .hf{
+    .hf {
       margin: 15px 0 0 0;
       height: 0;
-      border-bottom: 1px solid rgba(128,128,128,.12);
+      border-bottom: 1px solid rgba(128, 128, 128, .12);
     }
   }
 }

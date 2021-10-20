@@ -8,7 +8,7 @@ export default function PostsIndexItem({post, index}: { post: PostInfo, index: n
         <a>
             <div className={`${styles.postItem} postItem`} style={{transitionDelay: `${index * 0.1}s`}}>
                 <div className={styles.title}>
-                    {post.title}
+                    <span>{post.title}</span>
                 </div>
                 {post.banner && <img src={post.banner} alt={post.title} className={styles.banner}/>}
                 <div className={styles.date}>

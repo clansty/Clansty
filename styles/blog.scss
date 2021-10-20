@@ -7,13 +7,24 @@
   background-color: rgba(255, 255, 255, 0.7);
   transition: all 0.5s;
   overflow-y: auto;
+  line-height: 1.7em;
 
   @media (max-width: 1900px) {
     backdrop-filter: blur(5px);
   }
 
-  p{
-    line-height: 1.5em;
+  p {
+  }
+
+  a {
+    box-shadow: inset 0 -0.1666666667em 0 0 #fff, inset 0 -0.3333333333em 0 0 #bae6fd;
+    color: rgba(2, 132, 199, 1);
+    transition: all 0.3s;
+
+    &:hover {
+      color: rgba(2, 132, 199, 0.8);
+      box-shadow: unset;
+    }
   }
 
   code {
@@ -21,9 +32,10 @@
     padding: 3px;
     border-radius: 3px;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    white-space: pre-wrap;
   }
 
-  img{
+  img {
     max-width: 100%;
     object-fit: cover;
   }

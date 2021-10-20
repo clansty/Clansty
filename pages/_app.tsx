@@ -21,6 +21,7 @@ function MyApp({Component, pageProps}) {
         <Head>
             <link rel="icon" type="image/webp" href="/favicon.webp"/>
             <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+            <meta name="theme-color" content="#EDF8F6"/>
             <title>凌莞{chosenTitle}喵～</title>
         </Head>
         <PageSwapper
