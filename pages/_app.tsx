@@ -1,4 +1,5 @@
 import '../styles/globals.scss'
+import '../styles/blog.scss'
 import styles from '../styles/Home.module.scss'
 import classNames from 'classnames'
 import Head from 'next/head'
