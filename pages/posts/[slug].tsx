@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {materialOceanic} from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import Head from 'next/head'
+import RinMent from '../../components/RinMent'
 
 const components = {
     code({node, inline, className, children, ...props}) {
@@ -35,6 +36,7 @@ export default function SinglePost({meta, content}: { meta: PostInfo, content: s
         <div className="postContent">
             {/* @ts-ignore */}
             <ReactMarkdown components={components}>{content}</ReactMarkdown>
+            <RinMent slug={meta.slug}/>
         </div>
     </BlogLayout>
 }
