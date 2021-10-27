@@ -1,8 +1,5 @@
 module.exports = {
-    reactStrictMode: true,
-    publicRuntimeConfig: {
-        DOMESTIC: process.env.BUILD_FOR_DOMESTIC,
-    },
+    reactStrictMode: false,
     async redirects() {
         return [
             {

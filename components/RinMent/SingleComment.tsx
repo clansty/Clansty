@@ -4,7 +4,7 @@ import formatDate from '../../utils/formatDate'
 
 export default function SingleComment({comment}: { comment: Comment }) {
     return <div className={styles.commentEntry}>
-        <img src={comment.avatar} alt={`${comment.username} 的头像`} className={styles.avatar}/>
+        <img src={comment.avatar} alt={`${comment.username} 的头像`}/>
         <div className={styles.commentBody}>
             <div className={styles.username}>
                 {comment.url ?
@@ -14,9 +14,9 @@ export default function SingleComment({comment}: { comment: Comment }) {
             <div className={styles.date}>
                 {formatDate('yyyy/M/d h:m', new Date(comment.date))}
             </div>
-            <div className={styles.content}>
+            <pre>
                 {comment.content}
-            </div>
+            </pre>
         </div>
     </div>
 }

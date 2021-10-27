@@ -558,7 +558,7 @@
       font-size: x-large;
       font-weight: 500;
 
-      span{
+      span {
         transition: box-shadow 0.3s;
       }
     }
@@ -588,48 +588,52 @@
   }
 }
 
-.commentEntry{
+.commentEntry {
   width: 100%;
   display: flex;
   padding: 10px;
 
-  &:not(:last-child){
+  &:not(:last-child) {
     border-bottom: 1px solid rgba(128, 128, 128, .12);
   }
 
-  .avatar{
+  img {
     height: 65px;
     width: 65px;
     min-width: 65px;
     border-radius: 50%;
     object-fit: cover;
+    user-select: none;
   }
 
-  .commentBody{
+  .commentBody {
     padding-left: 10px;
     display: flex;
     flex-grow: 1;
     flex-direction: column;
 
-    .username{
+    .username {
       margin: 5px;
       font-size: small;
       color: #606266;
       line-height: 1em;
 
-      a{
+      a {
         box-shadow: unset;
       }
     }
 
-    .content{
+    pre {
       margin: 5px;
       font-size: smaller;
+      font-family: inherit;
       color: #303133;
       line-height: 1.2em;
+      word-wrap: break-word;
+      white-space: pre-wrap;
     }
 
-    .date{
+    .date {
       margin: 5px;
       font-size: x-small;
       color: #909399;
@@ -638,42 +642,60 @@
   }
 }
 
-.commentBox{
+.commentBox {
   color: #606266;
   border-top: 1px solid rgba(128, 128, 128, .12);
   padding-top: 18px;
 
-  .line1{
-    display: grid;
-    grid-template-columns: 33.33% 33.33% 33.33%;
-    margin-top: 7px;
+  fieldset {
+    margin: 7px 0 0 0;
+    margin-inline: 0;
+    padding: 0;
+    padding-inline: 0;
+    padding-block: 0;
+    border: none;
+
+    &:disabled{
+      cursor: progress;
+    }
   }
 
-  input{
+  div:first-child {
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+  }
+
+  input {
     background-color: rgba(237, 248, 246, 0.3);
     padding: 0.3em;
     margin: 5px;
     border: none;
     border-bottom: #ECFDF5 1px solid;
+    font-family: inherit;
+    font-size: 0.8em;
     transition: all 0.3s;
 
-    &:focus,&:focus-visible{
+    &:focus, &:focus-visible {
       outline: none;
       border: none;
       background-color: rgba(237, 248, 246, 0.55);
       border-bottom: #6EE7B7 1px solid;
     }
 
-    &:first-child{
+    &:disabled{
+      cursor: unset;
+    }
+
+    &:first-child {
       margin-left: 0;
     }
 
-    &:last-child{
+    &:last-child {
       margin-right: 0;
     }
   }
 
-  textarea{
+  textarea {
     width: 100%;
     height: 200px;
     resize: vertical;
@@ -682,22 +704,26 @@
     border: none;
     border-bottom: #ECFDF5 1px solid;
     transition: all 0.3s;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-family: inherit;
 
-    &:focus,&:focus-visible{
+    &:focus, &:focus-visible {
       outline: none;
       border: none;
       background-color: rgba(237, 248, 246, 0.55);
       border-bottom: #6EE7B7 1px solid;
     }
+
+    &:disabled{
+      cursor: unset;
+    }
   }
 
-  .sendContainer{
+  div:last-child {
     display: flex;
     justify-content: right;
 
-    button{
+    button {
       border-radius: 5px;
       border: #F9A8D4 solid 1px;
       background-color: rgba(249, 168, 212, 0.1);
@@ -709,12 +735,17 @@
       transition: all 0.3s;
       cursor: pointer;
 
-      &:hover{
+      &:hover:not(:disabled) {
         background-color: rgba(249, 168, 212, 0.2);
       }
 
-      &:active{
+      &:active {
         background-color: rgba(249, 168, 212, 0.5);
+      }
+
+      &:disabled {
+        border: rgba(249, 168, 212, 0.6) solid 1px;
+        cursor: unset;
       }
     }
   }

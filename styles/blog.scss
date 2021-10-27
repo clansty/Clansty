@@ -14,6 +14,13 @@
   }
 
   p {
+    code {
+      background: #eeeeee;
+      padding: 3px;
+      border-radius: 3px;
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      white-space: pre-wrap;
+    }
   }
 
   a {
@@ -25,14 +32,6 @@
       color: rgba(2, 132, 199, 0.8);
       box-shadow: unset;
     }
-  }
-
-  code {
-    background: #eeeeee;
-    padding: 3px;
-    border-radius: 3px;
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    white-space: pre-wrap;
   }
 
   img {
