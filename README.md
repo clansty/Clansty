@@ -1,6 +1,6 @@
 # Hi 👋 Clansty here.
 
-- 👩‍💻 Software Engineering Sophomore
+- 👩‍💻 Software Engineering
 - 👧🏻 Normal college girl
 - 📝 Use NodeJS backend, Vue.JS or React for frontend
 - 🌟 Make something to improve my life
