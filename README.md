@@ -6,7 +6,7 @@
 - 🌟 Make something to improve my life
 - 💕 Opensource
 
-[Homepage (zh)](https://clansty.com) · [Blog (zh)](https://nyac.at) · [About](https://clansty.com/about) ([zh](https://clansty.com/about?lang=zh) / [en](https://clansty.com/about?lang=en)) · [Sponsor](https://feed.lwqwq.com)
+[Homepage (zh)](https://clansty.com) · [Blog (zh)](https://nyac.at) · [About](https://clansty.com/about) ([zh](https://clansty.com/about?lang=zh) / [en](https://clansty.com/about?lang=en))
 
 ![skills](https://skillicons.dev/icons?i=bash,cs,cloudflare,css,docker,dotnet,electron,express,git,github,html,js,linux,md,mongodb,nextjs,nodejs,ps,postgres,pr,prisma,py,raspberrypi,react,redis,regex,sass,stackoverflow,ts,visualstudio,vscode,vue,workers)
 
