@@ -8,7 +8,7 @@
 
 [Homepage (zh)](https://clansty.com) · [Blog (zh)](https://nyac.at) · [About](https://clansty.com/about) ([zh](https://clansty.com/about?lang=zh) / [en](https://clansty.com/about?lang=en))
 
-USDT-TRC20: `TEnSLLsRmda44k8b1PF12Dj8yNRcCcJxYK`
+[Buy me a Milktea / 请我喝奶茶](https://nyac.at/donate)
 
 ![skills](https://skillicons.dev/icons?i=bash,cs,cloudflare,css,docker,dotnet,electron,express,git,github,html,js,linux,md,mongodb,nextjs,nodejs,ps,postgres,pr,prisma,py,raspberrypi,react,redis,regex,sass,stackoverflow,ts,visualstudio,vscode,vue,workers)
 
