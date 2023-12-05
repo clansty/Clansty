@@ -2,11 +2,11 @@
 
 - 👩‍💻 Software Engineering
 - 🐱 Non binary, or cat
-- 📝 Use NodeJS backend, Vue.JS or React for frontend
+- 📝 Use NodeJS backend, Vue.JS for frontend
 - 🌟 Make something to improve my life
 - 💕 Opensource
 
-[Homepage (zh)](https://clansty.com) · [Blog (zh)](https://nyac.at) · [About](https://clansty.com/about) ([zh](https://clansty.com/about?lang=zh) / [en](https://clansty.com/about?lang=en))
+[Homepage (zh)](https://nyac.at) · [Blog (zh)](https://nyac.at) · [About](https://nyac.at/about) ([zh](https://nyac.at/about?lang=zh) / [en](https://nyac.at/about?lang=en)) · [Friends](https://nyac.at/friends)
 
 [Buy me a Milktea / 请我喝奶茶](https://nyac.at/donate)
 
