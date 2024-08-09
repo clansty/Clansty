@@ -56,7 +56,8 @@ def "from env" []: string -> record {
     | transpose -r -d
 }
 
-if (sys host).name == 'Windows' {
+# 防止为空时报错
+if (sys host | select -i name).name == 'Windows' {
     source windows/env.nu
 } else {
     source linux/env.nu
