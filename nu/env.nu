@@ -36,7 +36,7 @@ alias df = df -h
 alias yay = paru
 
 def nrb [...args] {
-    sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args o+e>| nom --json
+    sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L ...$args o+e>| nom --json
 }
 alias nrbu = nrb '--recreate-lock-file'
 alias ngc = sudo nix-collect-garbage -d
