@@ -33,6 +33,8 @@ mkdir -p ~/.local/bin
 TMPDIR=$(mktemp -d)
 pushd $TMPDIR
 
+cargo uninstall nu || true
+
 if has pacman; then
     if ! has paru; then
         s pacman -S --needed --noconfirm base-devel
@@ -74,7 +76,7 @@ elif has apt; then
     fi
 
     s apt update
-    install-package fd-find carapace-bin gping ssh
+    install-package fd-find carapace-bin gping openssh-client
 fi
 
 popd
