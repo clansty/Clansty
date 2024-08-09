@@ -27,7 +27,7 @@ install-package() {
 }
 
 export PATH=$HOME/.local/bin:$PATH
-install-package git curl wget neovim ripgrep duf bat gping gdu unzip openssh
+install-package git curl wget neovim ripgrep duf bat gdu unzip
 
 mkdir -p ~/.local/bin
 TMPDIR=$(mktemp -d)
@@ -40,7 +40,8 @@ if has pacman; then
         cd paru-bin
         makepkg -si
     fi
-    paru -Sy --needed --noconfirm starship nushell carapace-bin dog curlie fd
+    paru -Sy --needed --noconfirm starship nushell carapace-bin dog curlie fd gping openssh
+
 elif has apt; then
     echo "deb [trusted=yes] https://apt.fury.io/rsteube/ /" | s tee /etc/apt/sources.list.d/rsteube.list
     if ! has starship; then
@@ -49,7 +50,6 @@ elif has apt; then
     if ! has curlie; then
         curl -sS https://webi.sh/curlie | sh
     fi
-    install-package fd-find carapace-bin
 
     if ! has dog; then
         wget https://github.com/ogham/dog/releases/download/v0.1.0/dog-v0.1.0-x86_64-unknown-linux-gnu.zip
@@ -63,6 +63,18 @@ elif has apt; then
         tar -xzf nu-0.96.1-x86_64-unknown-linux-gnu.tar.gz
         mv -f nu-0.96.1-x86_64-unknown-linux-gnu/nu* ~/.local/bin
     fi
+
+    if ! has gping; then
+        NAME=$(lsb_release --codename --short)
+        if [ "$NAME" != "trixie" ]; then
+            echo "deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ $NAME main" | s tee /etc/apt/sources.list.d/azlux.list
+            install-package gpg
+            curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor | s tee /usr/share/keyrings/azlux.gpg > /dev/null
+        fi
+    fi
+
+    s apt update
+    install-package fd-find carapace-bin gping ssh
 fi
 
 popd
