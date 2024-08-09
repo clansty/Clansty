@@ -29,6 +29,6 @@
           nixosModules = {
             apps = import ./nix/apps.nix;
             starship = import ./nix/starship/module.nix;
-          }
+          };
         };
 }
