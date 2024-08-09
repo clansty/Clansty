@@ -32,17 +32,15 @@ alias jctlu = journalctl --user-unit
 alias apt = sudo apt
 alias dpkg = sudo dpkg
 alias df = df -h
+alias yay = paru
 
-if (which nixos-rebuild | is-not-empty) {
-    def nrb [...args] {
-        sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args o+e>| nom --json
-    }
-    alias nrbu = nrb '--recreate-lock-file'
-    alias ngc = sudo nix-collect-garbage -d
+def nrb [...args] {
+    sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args o+e>| nom --json
 }
+alias nrbu = nrb '--recreate-lock-file'
+alias ngc = sudo nix-collect-garbage -d
 
 if (which paru | is-not-empty) {
-    alias yay = paru
 }
 
 def gacp [...message: string] {

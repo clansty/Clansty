@@ -895,3 +895,7 @@ $env.config = {
 
 source carapace.nu
 source starship.nu
+
+if (which setsid | is-not-empty) {
+    setsid nu ($env.RC_DIR | path join update.nu)
+}
