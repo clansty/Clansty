@@ -18,13 +18,14 @@ alias rm = rm --trash --recursive
 alias dig = dog
 alias ping = gping
 alias curl = curlie
+alias vi = nvim
 
 alias docker-ip = docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 alias dockers = docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
 
 if (which nixos-rebuild | is-not-empty) {
     def nrb [...args] {
-        sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args out+err>| nom --json
+        sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args o+e>| nom --json
     }
     alias nrbu = nrb '--recreate-lock-file'
     alias ngc = sudo nix-collect-garbage -d
