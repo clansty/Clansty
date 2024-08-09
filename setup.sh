@@ -69,7 +69,7 @@ elif has apt; then
     if ! has gping; then
         NAME=$(lsb_release --codename --short)
         if [ "$NAME" != "trixie" ]; then
-            echo "deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ $NAME main" | s tee /etc/apt/sources.list.d/azlux.list
+            echo "deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bullseye main" | s tee /etc/apt/sources.list.d/azlux.list
             install-package gpg
             curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor | s tee /usr/share/keyrings/azlux.gpg > /dev/null
         fi

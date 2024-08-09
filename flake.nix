@@ -27,5 +27,7 @@
               program = "${pkgs.callPackage ./nix/copy-gen-conf.nix { }}";
             };
           };
-        });
+        }) // {
+          nu-config-dir = ./nu;
+        };
 }
