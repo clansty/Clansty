@@ -14,13 +14,13 @@ has() {
 
 install-package() {
     if has pacman; then
-        s pacman -Sy --needed "$1"
+        s pacman -Sy --needed "$@"
     elif has apt; then
-        s apt install -y "$1"
+        s apt install -y "$@"
     elif has dnf; then
-        s dnf install "$1"
+        s dnf install "$@"
     elif has brew; then
-        brew install "$1"
+        brew install "$@"
     fi
 }
 
@@ -40,7 +40,7 @@ if has pacman; then
     paru -Sy --needed starship nushell carapace-bin dog curlie fd
 elif has apt; then
     echo "deb [trusted=yes] https://apt.fury.io/rsteube/ /" | s tee /etc/apt/sources.list.d/rsteube.list
-    curl -sS https://starship.rs/install.sh | sh -- --bin-dir ~/.local/bin
+    curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir ~/.local/bin
     curl -s https://packagecloud.io/install/repositories/Inveracity/nushell/script.deb.sh | s bash
     curl -sS https://webi.sh/curlie | sh
     install-package fd-find nushell carapace-bin
