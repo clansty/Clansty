@@ -61,9 +61,9 @@ elif has apt; then
     fi
 
     if ! has nu; then
-        wget https://github.com/nushell/nushell/releases/download/0.96.1/nu-0.96.1-x86_64-unknown-linux-gnu.tar.gz
-        tar -xzf nu-0.96.1-x86_64-unknown-linux-gnu.tar.gz
-        mv -f nu-0.96.1-x86_64-unknown-linux-gnu/nu* ~/.local/bin
+        wget https://github.com/nushell/nushell/releases/download/0.96.1/nu-0.96.1-x86_64-unknown-linux-musl.tar.gz
+        tar -xzf nu-0.96.1-x86_64-unknown-linux-musl.tar.gz
+        mv -f nu-0.96.1-x86_64-unknown-linux-musl/nu* ~/.local/bin
     fi
 
     if ! has gping; then

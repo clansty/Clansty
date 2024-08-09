@@ -13,6 +13,7 @@ alias la = ls -la
 alias ll = ls -l
 
 alias g = git
+alias pull = g pull
 alias grep = find
 alias rm = rm --trash --recursive
 alias dig = dog
