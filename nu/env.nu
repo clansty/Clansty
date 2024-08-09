@@ -23,6 +23,16 @@ alias vi = nvim
 alias docker-ip = docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 alias dockers = docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
 
+alias ip = ip -color -human-readable -pretty
+alias ipa = ip -brief a
+alias sctl = sudo systemctl
+alias sctlu = systemctl --user
+alias jctl = sudo journalctl
+alias jctlu = journalctl --user-unit
+alias apt = sudo apt
+alias dpkg = sudo dpkg
+alias df = df -h
+
 if (which nixos-rebuild | is-not-empty) {
     def nrb [...args] {
         sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L $args o+e>| nom --json
@@ -57,7 +67,7 @@ def "from env" []: string -> record {
 }
 
 # 防止为空时报错
-if (sys host | select -i name).name == 'Windows' {
+if (sys host).name? == 'Windows' {
     source windows/env.nu
 } else {
     source linux/env.nu
