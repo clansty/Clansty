@@ -25,7 +25,7 @@
             };
           };
         }) // {
-          nu-config-dir = ./nu;
+          rc-dir = ./.;
           nixosModules = {
             apps = import ./nix/apps.nix;
             starship = import ./nix/starship/module.nix;
