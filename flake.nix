@@ -18,9 +18,6 @@
           };
         in
         {
-          packages = {
-            starship-config = pkgs.callPackage ./nix/starship/starship.toml.nix { };
-          };
           apps = {
             copy-gen-conf = {
               type = "app";
@@ -29,5 +26,6 @@
           };
         }) // {
           nu-config-dir = ./nu;
+          starship-config = import ./nix/starship/config.nix;
         };
 }
