@@ -9,6 +9,14 @@ $env.ENV_CONVERSIONS = {
     }
 }
 
+def s --wrapped [cmd, ...args] {
+    if $env.USER != root {
+        sudo $cmd ...$args
+    } else {
+        run-external $cmd ...$args
+    }
+}
+
 alias la = ls -la
 alias ll = ls -l
 
@@ -24,25 +32,23 @@ alias vi = nvim
 alias docker-ip = docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 alias dockers = docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
 
-alias ip = ip -color -human-readable -pretty
+alias ip = s ip -color -human-readable -pretty
 alias ipa = ip -brief a
-alias sctl = sudo systemctl
+alias wg = s wg
+alias sctl = s systemctl
 alias sctlu = systemctl --user
-alias jctl = sudo journalctl
+alias jctl = s journalctl
 alias jctlu = journalctl --user-unit
-alias apt = sudo apt
-alias dpkg = sudo dpkg
+alias apt = s apt
+alias dpkg = s dpkg
 alias df = df -h
 alias yay = paru
 
-def nrb [...args] {
-    sudo nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L ...$args o+e>| nom --json
+def nrb --wrapped [...args] {
+    s nixos-rebuild switch --flake $"path:($env.HOME)/nixos" --log-format internal-json -v -L ...$args o+e>| nom --json
 }
 alias nrbu = nrb '--recreate-lock-file'
-alias ngc = sudo nix-collect-garbage -d
-
-if (which paru | is-not-empty) {
-}
+alias ngc = s nix-collect-garbage -d
 
 def gacp [...message: string] {
     git add .
