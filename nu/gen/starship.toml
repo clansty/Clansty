@@ -211,3 +211,13 @@ disabled = false
 [time]
 disabled = false
 format = "[$time]($style)"
+
+[username]
+format = "[$user]($style) @ "
+show_always = true
+
+[username.aliases]
+Administrator = "👻"
+Clansty = "🐱"
+clansty = "🐱"
+root = "👻"
