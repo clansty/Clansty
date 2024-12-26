@@ -61,6 +61,10 @@ def gac [...message: string] {
     git commit -m ($message | str join " ")
 }
 
+def updsrcinfo [] {
+    makepkg --printsrcinfo | save -f .SRCINFO
+}
+
 def "from env" []: string -> record {
   lines 
     | split column '#' 
