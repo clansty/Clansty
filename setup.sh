@@ -66,6 +66,7 @@ elif has apt; then
         mv -f nu-0.96.1-x86_64-unknown-linux-musl/nu* ~/.local/bin
     fi
 
+    install-package lsb-release
     if ! has gping; then
         NAME=$(lsb_release --codename --short)
         if [ "$NAME" != "trixie" ]; then
