@@ -2,7 +2,7 @@
 
 - 👩‍💻 Software Engineering
 - 🐱 Non binary, or cat
-- 📝 Use NodeJS backend, Vue.JS for frontend
+- 📝 Use NodeJS / C# backend, Vue.JS (TSX) for frontend
 - 🌟 Make something to improve my life
 - 💕 Opensource
 
