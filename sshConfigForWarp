@@ -1,0 +1,3 @@
+Include $HOME/.ssh/second_config
+RemoteCommand bash -c 'printf "\eP\$f{\"hook\": \"SourcedRcFileForWarp\", \"value\": { \"shell\": \"bash\"}}\x9c"; exec bash'
+RequestTTY force

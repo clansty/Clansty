@@ -73,3 +73,16 @@ function gac {
 function updsrcinfo {
     makepkg --printsrcinfo | Out-File -FilePath .SRCINFO -Force
 } 
+
+$scriptPath = Get-Item $MyInvocation.MyCommand.Path
+$targetDir = Split-Path -Path $scriptPath.Target -Parent
+# Write-Host "符号链接目标的基础目录: $targetDir"
+
+if ($env:TERM_PROGRAM -eq "WarpTerminal") {
+    ##### WHAT YOU WANT TO ENABLE FOR WARP - BELOW
+    Function ssh-Warp {
+        C:\Windows\System32\OpenSSH\ssh.exe -F "$($targetDir)/sshConfigForWarp" $args
+    }
+    Set-Alias ssh ssh-Warp
+    ##### WHAT YOU WANT TO ENABLE FOR WARP - ABOVE
+}
