@@ -1,0 +1,14 @@
+    window-rule {
+        geometry-corner-radius 20 // Set every window radius to 20
+        clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="kitty"
+        default-column-width {} // Use kitty's own preferred size (140c from kitty.conf)
+    }
+
+    layer-rule {
+        match namespace="^noctalia-wallpaper*"
+        place-within-backdrop true
+    }
