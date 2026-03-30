@@ -8,6 +8,11 @@
         default-column-width {} // Use kitty's own preferred size (140c from kitty.conf)
     }
 
+    window-rule {
+        match app-id="microsoft-edge"
+        default-column-width { proportion 1.0; }
+    }
+
     layer-rule {
         match namespace="^noctalia-wallpaper*"
         place-within-backdrop true

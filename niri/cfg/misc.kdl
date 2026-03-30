@@ -17,7 +17,7 @@
     }
 
     cursor {
-        xcursor-theme "capitaine-cursors"
+        xcursor-theme "Bibata-Modern-Classic"
     }
 
     debug {
@@ -27,4 +27,10 @@
 
     hotkey-overlay {
        skip-at-startup
+    }
+
+    gestures {
+        hot-corners {
+            off
+        }
     }

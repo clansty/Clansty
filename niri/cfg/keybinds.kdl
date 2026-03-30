@@ -14,6 +14,7 @@ binds {
     Mod+B                               hotkey-overlay-title="Open Browser: microsoft-edge-stable" { spawn "microsoft-edge-stable"; }
     Mod+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
     Mod+Shift+Q                        hotkey-overlay-title="Session Menu: noctalia sessionMenu" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
+    Mod+Comma { spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"; }
 
     // Please choose your own file manager.
     Mod+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
@@ -121,7 +122,7 @@ binds {
     Mod+W                               { toggle-column-tabbed-display; }
 
     // ─── Screenshots ───
-    CTRL+Shift+1                        { screenshot; }
+    CTRL+SHIFT+S                        { screenshot; }
     CTRL+Shift+2                        { screenshot-screen; }
     CTRL+Shift+3                        { screenshot-window; }
 

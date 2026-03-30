@@ -4,7 +4,7 @@
 
         background-color "transparent" // <- needed for noctalia-shell to set wallpaper
 
-        default-column-width { proportion 0.75; }
+        default-column-width { proportion 0.9; }
 
         preset-column-widths {
             proportion 0.33333
