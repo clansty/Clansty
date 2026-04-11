@@ -14,6 +14,7 @@ input {
     touchpad {
         tap // Enable tap-to-click
         natural-scroll // Enable natural (macOS-style) scrolling
+        scroll-factor 0.5 // Slow down two-finger scroll speed (default 1.0)
     }
 
     mouse {
