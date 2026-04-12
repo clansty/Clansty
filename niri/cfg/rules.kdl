@@ -14,6 +14,16 @@
         open-floating true
     }
 
+    window-rule {
+        match app-id="labwc"
+        default-column-width { fixed 3413; }
+    }
+
+    window-rule {
+        match app-id="fusion360.exe"
+        default-column-width { fixed 2000; }
+    }
+
     layer-rule {
         match namespace="^noctalia-wallpaper*"
         place-within-backdrop true
