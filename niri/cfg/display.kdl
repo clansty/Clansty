@@ -7,3 +7,8 @@
     mode "2560x1440@359.979" // Set resolution and refresh rate
     scale 1 // No scaling (use 2 for HiDPI)
 }
+
+output "DP-3" {
+    mode "5120x2160@120.000"
+    scale 1.5
+}

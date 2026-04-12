@@ -1,21 +1,17 @@
     window-rule {
         geometry-corner-radius 20 // Set every window radius to 20
         clip-to-geometry true
-    }
-
-    window-rule {
-        match app-id="kitty"
-        default-column-width {} // Use kitty's own preferred size (140c from kitty.conf)
-    }
-
-    window-rule {
-        match app-id="microsoft-edge"
-        default-column-width { proportion 1.0; }
+        default-column-width {} // Use every window's own preferred size
     }
 
     window-rule {
         match title="Sinmai"
         open-floating false
+    }
+
+    window-rule {
+        match title="Hold on..."
+        open-floating true
     }
 
     layer-rule {

@@ -27,6 +27,9 @@ binds {
     XF86AudioPrev                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
     XF86AudioPlay                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
     XF86AudioPause                      allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
+    Ctrl+Alt+P                          { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
+    Ctrl+Alt+Left                       { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
+    Ctrl+Alt+Right                      { spawn-sh "qs -c noctalia-shell ipc call media next"; }
 
     // ─── Brightness Controls ───
     XF86MonBrightnessUp                 allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call brightness increase"; }
@@ -121,7 +124,7 @@ binds {
     Mod+W                               { toggle-column-tabbed-display; }
 
     // ─── Screenshots ───
-    CTRL+SHIFT+S                        { spawn-sh "flameshot gui"; }
+    CTRL+SHIFT+S                        { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.
