@@ -14,6 +14,8 @@
         QT_IM_MODULE "fcitx"
         SDL_IM_MODULE "fcitx"
         XMODIFIERS "@im=fcitx"
+
+        BROWSER "/home/clansty/.local/bin/edge-app"
     }
 
     cursor {

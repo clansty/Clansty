@@ -7,36 +7,38 @@ binds {
     // https://docs.noctalia.dev/getting-started/keybinds/
 
     // ─── Applications ───
-    Mod+Return                          hotkey-overlay-title="Open Terminal: kitty" { spawn "kitty"; }
-    Alt+Space                     hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
-    Mod+B                               hotkey-overlay-title="Open Browser: microsoft-edge-stable" { spawn "microsoft-edge-stable"; }
-    Mod+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
-    Mod+Shift+Q                        hotkey-overlay-title="Session Menu: noctalia sessionMenu" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
-    Mod+Comma { spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"; }
-    Mod+V { spawn-sh "qs -c noctalia-shell ipc call plugin:clipper toggle"; }
+    Mod+Return        hotkey-overlay-title="Kitty Terminal"       { spawn "kitty"; }
+    Alt+Space         hotkey-overlay-title="启动器"                 { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
+    Mod+B             hotkey-overlay-title="Microsoft Edge"       { spawn "microsoft-edge-stable"; }
+    Mod+L             hotkey-overlay-title="锁屏"                 { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
+    Mod+Shift+Q       hotkey-overlay-title="会话菜单"               { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
+    Mod+Comma         hotkey-overlay-title="快捷键帮助"             { spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"; }
+    Mod+S             hotkey-overlay-title="Clipper"              { spawn-sh "qs -c noctalia-shell ipc call plugin:clipper toggle"; }
+    Mod+H             hotkey-overlay-title="Home Assistant"       { spawn-sh "microsoft-edge-stable --app=https://hass.c5y.moe/"; }
+    Mod+I             hotkey-overlay-title="OpenCode Web"         { spawn-sh "microsoft-edge-stable --app=http://127.0.0.1:4096"; }
 
     // Please choose your own file manager.
-    Mod+E                               hotkey-overlay-title="File Manager: Nautilus" { spawn "nautilus"; }
+    Mod+E             hotkey-overlay-title="Nautilus"             { spawn "nautilus"; }
 
     // ─── Media Controls ───
-    XF86AudioRaiseVolume                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
-    XF86AudioLowerVolume                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }
-    XF86AudioMute                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"; }
-    XF86AudioMicMute                    allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteInput"; }
-    XF86AudioNext                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media next"; }
-    XF86AudioPrev                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
-    XF86AudioPlay                       allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
-    XF86AudioPause                      allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
-    Ctrl+Alt+P                          { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
-    Ctrl+Alt+Left                       { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
-    Ctrl+Alt+Right                      { spawn-sh "qs -c noctalia-shell ipc call media next"; }
+    XF86AudioRaiseVolume              hotkey-overlay-title="音量+"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
+    XF86AudioLowerVolume              hotkey-overlay-title="音量-"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }
+    XF86AudioMute                     hotkey-overlay-title="静音"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"; }
+    XF86AudioMicMute                  hotkey-overlay-title="麦克风静音"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume muteInput"; }
+    XF86AudioNext                      hotkey-overlay-title="下一首"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media next"; }
+    XF86AudioPrev                      hotkey-overlay-title="上一首"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
+    XF86AudioPlay                      hotkey-overlay-title="播放"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
+    XF86AudioPause                     hotkey-overlay-title="暂停"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
+    Ctrl+Alt+P                         hotkey-overlay-title="播放/暂停"  { spawn-sh "qs -c noctalia-shell ipc call media playPause"; }
+    Ctrl+Alt+Left                      hotkey-overlay-title="上一首"  { spawn-sh "qs -c noctalia-shell ipc call media previous"; }
+    Ctrl+Alt+Right                     hotkey-overlay-title="下一首"  { spawn-sh "qs -c noctalia-shell ipc call media next"; }
 
     // ─── Brightness Controls ───
-    XF86MonBrightnessUp                 allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call brightness increase"; }
-    XF86MonBrightnessDown               allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call brightness decrease"; }
+    XF86MonBrightnessUp                 hotkey-overlay-title="亮度+"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call brightness increase"; }
+    XF86MonBrightnessDown               hotkey-overlay-title="亮度-"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call brightness decrease"; }
 
     // ─── Window Movement and Focus ───
-    Mod+Q                               { close-window; }
+    Mod+Q                               hotkey-overlay-title="关闭窗口" { close-window; }
 
     Mod+Left                            { focus-column-left; }
     // Mod+H                               { focus-column-left; }
@@ -125,7 +127,7 @@ binds {
     Mod+W                               { toggle-column-tabbed-display; }
 
     // ─── Screenshots ───
-    CTRL+SHIFT+S                        { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
+    CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.
@@ -133,7 +135,7 @@ binds {
     Mod+ESCAPE                          allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
     // ─── Exit / Power ───
-    CTRL+ALT+Delete                     { quit; } // Also quits Niri
+    CTRL+ALT+Delete                     hotkey-overlay-title="退出" { quit; }
     Mod+Shift+P                         { power-off-monitors; } // Turn off screens (useful for OLED or privacy)
     Mod+O                               repeat=false { toggle-overview; }
 }
