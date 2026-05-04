@@ -11,7 +11,6 @@ binds {
     Alt+Space         hotkey-overlay-title="启动器"                 { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
     Mod+B             hotkey-overlay-title="Microsoft Edge"       { spawn "microsoft-edge-stable"; }
     Mod+L             hotkey-overlay-title="锁屏"                 { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
-    Mod+Shift+Q       hotkey-overlay-title="会话菜单"               { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
     Mod+Comma         hotkey-overlay-title="快捷键帮助"             { spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"; }
     Mod+S             hotkey-overlay-title="Clipper"              { spawn-sh "qs -c noctalia-shell ipc call plugin:clipper toggle"; }
     Mod+H             hotkey-overlay-title="Home Assistant"       { spawn-sh "microsoft-edge-stable --app=https://hass.c5y.moe/"; }
@@ -74,10 +73,17 @@ binds {
     Mod+Shift+CTRL+Down                 { move-column-to-monitor-down; }
 
     // ─── Workspace Switching ───
-    Mod+WheelScrollDown                 cooldown-ms=150 { focus-workspace-down; }
-    Mod+WheelScrollUp                   cooldown-ms=150 { focus-workspace-up; }
-    Mod+CTRL+WheelScrollDown            cooldown-ms=150 { move-column-to-workspace-down; }
-    Mod+CTRL+WheelScrollUp              cooldown-ms=150 { move-column-to-workspace-up; }
+    Mod+WheelScrollDown                 cooldown-ms=50 { focus-workspace-down; }
+    Mod+WheelScrollUp                   cooldown-ms=50 { focus-workspace-up; }
+    Mod+CTRL+WheelScrollDown            cooldown-ms=50 { move-column-to-workspace-down; }
+    Mod+CTRL+WheelScrollUp              cooldown-ms=50 { move-column-to-workspace-up; }
+
+    Super+MouseForward                  { focus-workspace 1; }
+    Super+MouseBack                     { focus-workspace 255; }
+    Super+Shift+MouseForward            { focus-column-first; }
+    Super+Shift+MouseBack               { focus-column-last; }
+    Super+CTRL+MouseForward             { move-workspace-up; }
+    Super+CTRL+MouseBack                { move-workspace-down; }
 
     Mod+WheelScrollRight                { focus-column-right; }
     Mod+WheelScrollLeft                 { focus-column-left; }
@@ -128,6 +134,9 @@ binds {
 
     // ─── Screenshots ───
     CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
+    Mod+Shift+C                         hotkey-overlay-title="选取颜色" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:screen-toolkit" "colorPicker"; }
+    Mod+Shift+S                         hotkey-overlay-title="截图当前窗口" { screenshot-window write-to-disk=false; }
+    Mod+Shift+Q                         hotkey-overlay-title="扫描二维码" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:screen-toolkit" "qr"; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.

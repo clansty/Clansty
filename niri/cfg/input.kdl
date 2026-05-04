@@ -24,6 +24,6 @@ input {
         accel-speed 0.0
     }
 
-    focus-follows-mouse // Automatically focus windows under the mouse pointer
+    focus-follows-mouse max-scroll-amount="0%" // 聚焦但不滚动
     workspace-auto-back-and-forth // Enable workspace back & forth switching
 }

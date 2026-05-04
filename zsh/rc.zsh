@@ -1,3 +1,9 @@
+# History: keep per-session ↑↓ navigation
+# Commands still save to file immediately, but other windows' new commands
+# won't appear until next shell start
+unsetopt share_history
+setopt inc_append_history
+
 # Environment
 export EDITOR="nvim"
 export SUDOEDITOR="nvim"
