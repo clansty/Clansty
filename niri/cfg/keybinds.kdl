@@ -117,6 +117,8 @@ binds {
 
     Mod+TAB                             { focus-workspace-previous; }
 
+    Mod+Shift+N    hotkey-overlay-title="重命名当前工作区"    { spawn-sh "~/rc/niri/scripts/workspace-rename.sh"; }
+
     // ─── Layout Controls ───
     Mod+CTRL+F                          { expand-column-to-available-width; }
     Mod+C                               { center-column; }
