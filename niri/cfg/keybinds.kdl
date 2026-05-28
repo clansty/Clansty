@@ -135,7 +135,8 @@ binds {
     Mod+W                               { toggle-column-tabbed-display; }
 
     // ─── Screenshots ───
-    CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
+    //CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
+    CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim -g \"$(slurp)\" - | wl-copy -t image/png"; }
     Mod+Shift+D                         hotkey-overlay-title="screen-toolkit" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:screen-toolkit" "toggle"; }
     Mod+Shift+S                         hotkey-overlay-title="截图当前窗口" { screenshot-window write-to-disk=false; }
 

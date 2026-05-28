@@ -2,6 +2,8 @@
         geometry-corner-radius 20 // Set every window radius to 20
         clip-to-geometry true
         default-column-width {} // Use every window's own preferred size
+        open-on-output "DP-1" // 新窗口默认开在主屏，手动拖到副屏不受影响
+        open-focused true // 强制聚焦新窗口（否则焦点会留在副屏）
     }
 
     window-rule {
@@ -10,8 +12,28 @@
     }
 
     window-rule {
-        match title="图片查看"
+        match title=r"Icalingua\+\+ ImageViewer"
         open-floating true
+    }
+
+    window-rule {
+        match title=r"Icalingua\+\+ Main"
+        open-floating false
+        open-on-output "DP-3"
+    }
+
+    window-rule {
+        match title="0wGram"
+        open-floating false
+        open-on-output "DP-3"
+    }
+
+    window-rule {
+        match app-id=r"^$" title=r"^$"
+        open-floating true
+        open-focused false  
+        geometry-corner-radius 0
+        clip-to-geometry false
     }
 
     window-rule {
@@ -42,6 +64,11 @@
     window-rule {
         match app-id="looking-glass-client"
         default-column-width { fixed 2613; }
+    }
+
+    window-rule {
+        match app-id="msedge-hass.c5y.moe__-Profile_1"
+        default-column-width { fixed 1900; }
     }
 
     layer-rule {
