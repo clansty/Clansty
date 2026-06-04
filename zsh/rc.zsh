@@ -51,6 +51,9 @@ alias dpkg='s dpkg'
 alias apt='s apt'
 alias pacman='s pacman'
 
+alias codex='codex --dangerously-bypass-approvals-and-sandbox'
+alias claude='claude --dangerously-skip-permissions'
+
 
 # Nix
 nrb() {

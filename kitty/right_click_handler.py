@@ -8,8 +8,10 @@ def handle_result(args, answer, target_window_id, boss):
         return
     text = w.text_for_selection()
     if text:
-        from kitty.clipboard import set_clipboard_string
-        set_clipboard_string(text)
-        boss.clear_selection()
+        w.copy_to_clipboard()
+        w.clear_selection()
     else:
         boss.paste_from_clipboard()
+
+
+setattr(handle_result, "no_ui", True)
