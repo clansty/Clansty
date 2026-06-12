@@ -63,7 +63,7 @@
 
     window-rule {
         match app-id="looking-glass-client"
-        default-column-width { fixed 2613; }
+        default-column-width { fixed 2915; }
     }
 
     window-rule {
