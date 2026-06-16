@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+gui_pinentry=/usr/bin/pinentry-gnome3
+curses_pinentry=/usr/bin/pinentry-curses
+tty_pinentry=/usr/bin/pinentry-tty
+
+ttyname=
+display=
+wayland_display=
+systemd_display_loaded=0
+buffer=()
+backend_started=0
+
+send_ok() {
+  printf 'OK\n'
+}
+
+parse_option() {
+  local line=$1 value
+
+  case "$line" in
+    "OPTION ttyname="*)
+      ttyname=${line#OPTION ttyname=}
+      ;;
+    "OPTION display="*)
+      display=${line#OPTION display=}
+      ;;
+    "OPTION putenv=WAYLAND_DISPLAY="*)
+      value=${line#OPTION putenv=WAYLAND_DISPLAY=}
+      wayland_display=$value
+      ;;
+    "OPTION putenv=DISPLAY="*)
+      value=${line#OPTION putenv=DISPLAY=}
+      display=$value
+      ;;
+  esac
+}
+
+load_systemd_display() {
+  local line
+
+  [ "$systemd_display_loaded" -eq 0 ] || return
+  systemd_display_loaded=1
+
+  command -v systemctl >/dev/null 2>&1 || return
+
+  while IFS= read -r line; do
+    case "$line" in
+      DISPLAY=*)
+        [ -n "$display" ] || display=${line#DISPLAY=}
+        ;;
+      WAYLAND_DISPLAY=*)
+        [ -n "$wayland_display" ] || wayland_display=${line#WAYLAND_DISPLAY=}
+        ;;
+    esac
+  done < <(systemctl --user show-environment 2>/dev/null)
+}
+
+choose_backend() {
+  load_systemd_display
+
+  if { [ -n "$display" ] || [ -n "$wayland_display" ]; } && [ -x "$gui_pinentry" ]; then
+    printf '%s\n' "$gui_pinentry"
+    return
+  fi
+
+  if [ -n "$ttyname" ] && [ "$ttyname" != "not a tty" ] && [ -e "$ttyname" ] && [ -x "$curses_pinentry" ]; then
+    printf '%s\n' "$curses_pinentry"
+    return
+  fi
+
+  if { [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; } && [ -x "$gui_pinentry" ]; then
+    printf '%s\n' "$gui_pinentry"
+    return
+  fi
+
+  if [ -x "$curses_pinentry" ]; then
+    printf '%s\n' "$curses_pinentry"
+    return
+  fi
+
+  printf '%s\n' "$tty_pinentry"
+}
+
+read_backend_response() {
+  local response
+
+  while IFS= read -r response <&"${PINENTRY_BACKEND[0]}"; do
+    case "$response" in
+      OK*|ERR*)
+        return 0
+        ;;
+      D*|INQUIRE*)
+        ;;
+      *)
+        printf '%s\n' "$response" >&2
+        ;;
+    esac
+  done
+
+  return 1
+}
+
+relay_backend_response() {
+  local response
+
+  while IFS= read -r response <&"${PINENTRY_BACKEND[0]}"; do
+    case "$response" in
+      D*|INQUIRE*)
+        printf '%s\n' "$response"
+        ;;
+      OK*|ERR*)
+        printf '%s\n' "$response"
+        return 0
+        ;;
+      *)
+        printf '%s\n' "$response" >&2
+        ;;
+    esac
+  done
+
+  return 1
+}
+
+start_backend() {
+  local backend
+
+  backend=$(choose_backend)
+  if [ ! -x "$backend" ]; then
+    printf 'ERR 67109133 no usable pinentry found <Pinentry>\n'
+    exit 1
+  fi
+
+  coproc PINENTRY_BACKEND { "$backend"; }
+  backend_started=1
+
+  if ! read_backend_response; then
+    printf 'ERR 67109133 failed to start pinentry <Pinentry>\n'
+    exit 1
+  fi
+
+  for line in "${buffer[@]}"; do
+    printf '%s\n' "$line" >&"${PINENTRY_BACKEND[1]}"
+    read_backend_response || {
+      printf 'ERR 67109133 pinentry setup failed <Pinentry>\n'
+      exit 1
+    }
+  done
+}
+
+forward_to_backend() {
+  local line=$1
+
+  printf '%s\n' "$line" >&"${PINENTRY_BACKEND[1]}"
+  relay_backend_response || {
+    printf 'ERR 67109133 pinentry failed <Pinentry>\n'
+    exit 1
+  }
+}
+
+printf 'OK pinentry-auto ready\n'
+
+while IFS= read -r request; do
+  if [ "$backend_started" -eq 0 ]; then
+    case "$request" in
+      OPTION*)
+        parse_option "$request"
+        buffer+=("$request")
+        send_ok
+        ;;
+      BYE)
+        printf 'OK closing connection\n'
+        exit 0
+        ;;
+      *)
+        start_backend
+        forward_to_backend "$request"
+        ;;
+    esac
+  else
+    forward_to_backend "$request"
+  fi
+done

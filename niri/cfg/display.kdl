@@ -3,15 +3,5 @@
 // You will have to remove "/-" and edit it before it takes effect.
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
 
-output "DP-1" {
-    mode "5120x2160@120.000"
-    scale 1.35
-    position x=900 y=0
-}
-
-output "DP-3" {
-    mode "2560x1600@160.000"
-    scale 1.6
-    transform "90"
-    position x=0 y=0
-}
+// Shared output defaults go here. Machine-specific connector layout belongs in
+// ../hosts/*.kdl, selected by ../local.kdl.

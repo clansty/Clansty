@@ -48,7 +48,11 @@ alias sctlu='systemctl --user'
 alias jctl='s journalctl'
 alias jctlu='journalctl --user-unit'
 alias dpkg='s dpkg'
-alias apt='s apt'
+if [[ -n "$TERMUX_VERSION" || "$PREFIX" == /data/data/com.termux/files/usr ]]; then
+    unalias apt 2>/dev/null
+else
+    alias apt='s apt'
+fi
 alias pacman='s pacman'
 
 alias codex='codex --dangerously-bypass-approvals-and-sandbox'

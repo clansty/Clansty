@@ -9,3 +9,6 @@ include "./cfg/misc.kdl"
 
 include "./noctalia.kdl"
 
+// Per-machine overrides. Keep this file untracked and point it at one of
+// ./hosts/*.kdl, or define local-only settings directly in it.
+include optional=true "./local.kdl"
