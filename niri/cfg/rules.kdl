@@ -43,6 +43,11 @@
     }
 
     window-rule {
+        match title="Open Orpheus Lyrics"
+        open-floating true
+    }
+
+    window-rule {
         match app-id="unity-ime-dialog.py"
         open-floating true
     }

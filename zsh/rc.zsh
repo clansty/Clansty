@@ -58,6 +58,17 @@ alias pacman='s pacman'
 alias codex='codex --dangerously-bypass-approvals-and-sandbox'
 alias claude='claude --dangerously-skip-permissions'
 
+alias tmuxa='tmux new -A -s main'
+
+# ZLE key bindings
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[5D' backward-word
+bindkey '^[[5C' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word
+bindkey '^[b' backward-word
+bindkey '^[f' forward-word
 
 # Nix
 nrb() {
