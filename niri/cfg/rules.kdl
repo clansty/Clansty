@@ -45,6 +45,8 @@
     window-rule {
         match title="Open Orpheus Lyrics"
         open-floating true
+        open-focused false   // 打开时不抢焦点
+        focus-ring { off; }   // 去掉聚焦时 niri 画的高亮环
     }
 
     window-rule {
