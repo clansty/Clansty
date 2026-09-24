@@ -1,0 +1,322 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "httpx2[http2,brotli,zstd]",
+#     "pydantic>=2.12",
+#     "typer>=0.16",
+# ]
+# ///
+
+# ─── How to run ───
+# 1. Install uv (if not installed):
+#      curl -LsSf https://astral.sh/uv/install.sh | sh
+# 2. Run directly (no venv, no pip install needed):
+#      uv run llm_api_test.py BASE_URL API_KEY MODEL [--api all] [--stream]
+# 3. Or make executable and run:
+#      chmod +x llm_api_test.py && ./llm_api_test.py BASE_URL API_KEY MODEL
+# ──────────────────
+
+from __future__ import annotations
+
+import socket
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Annotated, ClassVar, Final, Literal
+
+import httpx2
+import typer
+from pydantic import BaseModel, ConfigDict, ValidationError
+
+MAX_TOKENS: Final = 64
+
+
+class ApiKind(StrEnum):
+    CHAT = "chat"
+    RESPONSES = "responses"
+    MESSAGES = "messages"
+
+
+class ApiSelection(StrEnum):
+    ALL = "all"
+    CHAT = "chat"
+    RESPONSES = "responses"
+    MESSAGES = "messages"
+
+
+class FrozenModel(BaseModel):
+    model_config: ClassVar[ConfigDict] = ConfigDict(frozen=True, extra="ignore")
+
+
+class InputMessage(FrozenModel):
+    role: Literal["user"] = "user"
+    content: str
+
+
+class ChatRequest(FrozenModel):
+    model: str
+    messages: tuple[InputMessage, ...]
+    max_tokens: int = MAX_TOKENS
+    stream: bool
+
+
+class ResponsesRequest(FrozenModel):
+    model: str
+    input: str
+    max_output_tokens: int = MAX_TOKENS
+    stream: bool
+
+
+class MessagesRequest(FrozenModel):
+    model: str
+    messages: tuple[InputMessage, ...]
+    max_tokens: int = MAX_TOKENS
+    stream: bool
+
+
+type ApiRequest = ChatRequest | ResponsesRequest | MessagesRequest
+
+
+@dataclass(frozen=True, slots=True)
+class RequestConfig:
+    base_url: str
+    api_key: str
+    model: str
+    prompt: str
+    stream: bool
+
+
+@dataclass(frozen=True, slots=True)
+class EndpointRequest:
+    url: str
+    headers: dict[str, str]
+    payload: ApiRequest
+
+
+class TextValue(FrozenModel):
+    content: str | None = None
+    text: str | None = None
+    reasoning_content: str | None = None
+    thinking: str | None = None
+
+
+class Choice(FrozenModel):
+    message: TextValue | None = None
+    delta: TextValue | None = None
+
+
+class ContentPart(FrozenModel):
+    text: str | None = None
+    thinking: str | None = None
+
+
+class OutputItem(FrozenModel):
+    content: tuple[ContentPart, ...] = ()
+
+
+class MessageInfo(FrozenModel):
+    model: str | None = None
+    content: tuple[ContentPart, ...] = ()
+
+
+class ApiPayload(FrozenModel):
+    type: str | None = None
+    model: str | None = None
+    output_text: str | None = None
+    choices: tuple[Choice, ...] = ()
+    content: tuple[ContentPart, ...] = ()
+    output: tuple[OutputItem, ...] = ()
+    delta: str | TextValue | None = None
+    message: MessageInfo | None = None
+    response: ApiPayload | None = None
+
+
+def build_request(api: ApiKind, config: RequestConfig) -> EndpointRequest:
+    base_url = config.base_url.rstrip("/")
+    bearer_headers = {
+        "Authorization": f"Bearer {config.api_key}",
+        "Content-Type": "application/json",
+    }
+    messages = (InputMessage(content=config.prompt),)
+
+    match api:
+        case ApiKind.CHAT:
+            return EndpointRequest(
+                url=f"{base_url}/v1/chat/completions",
+                headers=bearer_headers,
+                payload=ChatRequest(model=config.model, messages=messages, stream=config.stream),
+            )
+        case ApiKind.RESPONSES:
+            return EndpointRequest(
+                url=f"{base_url}/v1/responses",
+                headers=bearer_headers,
+                payload=ResponsesRequest(model=config.model, input=config.prompt, stream=config.stream),
+            )
+        case ApiKind.MESSAGES:
+            return EndpointRequest(
+                url=f"{base_url}/v1/messages",
+                headers={
+                    "x-api-key": config.api_key,
+                    "anthropic-version": "2023-06-01",
+                    "Content-Type": "application/json",
+                },
+                payload=MessagesRequest(model=config.model, messages=messages, stream=config.stream),
+            )
+
+
+def parse_payload(raw: str) -> ApiPayload:
+    return ApiPayload.model_validate_json(raw)
+
+
+def extract_model(payload: ApiPayload) -> str | None:
+    message_model = payload.message.model if payload.message else None
+    response_model = extract_model(payload.response) if payload.response else None
+    return payload.model or message_model or response_model
+
+
+def extract_text(api: ApiKind, payload: ApiPayload) -> str:
+    match api:
+        case ApiKind.CHAT:
+            return "".join(
+                (
+                    (choice.delta.content or choice.delta.reasoning_content)
+                    if choice.delta
+                    else (choice.message.content or choice.message.reasoning_content if choice.message else "")
+                )
+                or ""
+                for choice in payload.choices
+            )
+        case ApiKind.RESPONSES:
+            match payload.delta:
+                case str() as delta:
+                    delta_text = delta
+                case TextValue(text=text):
+                    delta_text = text or payload.delta.thinking or ""
+                case None:
+                    delta_text = ""
+            output_text = "".join(part.text or "" for item in payload.output for part in item.content)
+            nested_text = extract_text(api, payload.response) if payload.response else ""
+            return payload.output_text or delta_text or output_text or nested_text
+        case ApiKind.MESSAGES:
+            match payload.delta:
+                case TextValue(text=text):
+                    delta_text = text or payload.delta.thinking or ""
+                case str() as delta:
+                    delta_text = delta
+                case None:
+                    delta_text = ""
+            content_text = "".join(part.text or part.thinking or "" for part in payload.content)
+            message_text = "".join(
+                part.text or part.thinking or "" for part in payload.message.content
+            ) if payload.message else ""
+            return delta_text or content_text or message_text
+
+
+def create_client(stream: bool) -> httpx2.Client:
+    limits = httpx2.Limits(
+        max_connections=200,
+        max_keepalive_connections=40,
+        keepalive_expiry=30.0,
+    )
+    timeout = httpx2.Timeout(connect=5.0, read=None if stream else 30.0, write=10.0, pool=10.0)
+    transport = httpx2.HTTPTransport(
+        http2=True,
+        retries=3,
+        limits=limits,
+        socket_options=[(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)],
+    )
+    return httpx2.Client(transport=transport, timeout=timeout, follow_redirects=True)
+
+
+def consume_stream(api: ApiKind, response: httpx2.Response) -> bool:
+    upstream_model: str | None = None
+    typer.echo("返回内容：", nl=False)
+    for line in response.iter_lines():
+        if not line.startswith("data:"):
+            continue
+        data = line.removeprefix("data:").strip()
+        if not data or data == "[DONE]":
+            continue
+        try:
+            payload = parse_payload(data)
+        except ValidationError as error:
+            typer.echo(f"\n事件解析错误：{error}\n原始事件：{data}")
+            return False
+        upstream_model = extract_model(payload) or upstream_model
+        typer.echo(extract_text(api, payload), nl=False)
+    typer.echo()
+    typer.echo(f"上游模型：{upstream_model or '未返回'}")
+    return True
+
+
+def run_test(api: ApiKind, config: RequestConfig, client: httpx2.Client) -> bool:
+    request = build_request(api, config)
+    typer.echo(f"\n=== {api.value} | {'stream' if config.stream else 'non-stream'} ===")
+    typer.echo(f"请求地址：{request.url}")
+    try:
+        with client.stream(
+            "POST",
+            request.url,
+            headers=request.headers,
+            content=request.payload.model_dump_json(),
+        ) as response:
+            typer.echo(f"HTTP 状态：{response.status_code}")
+            if response.is_error:
+                typer.echo(f"错误内容：{response.read().decode(errors='replace')}")
+                typer.echo("上游模型：未返回")
+                return False
+            if config.stream:
+                return consume_stream(api, response)
+            raw = response.read().decode(errors="replace")
+    except httpx2.HTTPError as error:
+        typer.echo(f"请求错误：{error}")
+        typer.echo("上游模型：未返回")
+        return False
+
+    try:
+        payload = parse_payload(raw)
+    except ValidationError as error:
+        typer.echo(f"响应解析错误：{error}")
+        typer.echo(f"原始响应：{raw}")
+        typer.echo("上游模型：未返回")
+        return False
+    typer.echo(f"返回内容：{extract_text(api, payload) or '(空)'}")
+    typer.echo(f"上游模型：{extract_model(payload) or '未返回'}")
+    return True
+
+
+def selected_apis(selection: ApiSelection) -> tuple[ApiKind, ...]:
+    match selection:
+        case ApiSelection.ALL:
+            return (ApiKind.CHAT, ApiKind.RESPONSES, ApiKind.MESSAGES)
+        case ApiSelection.CHAT:
+            return (ApiKind.CHAT,)
+        case ApiSelection.RESPONSES:
+            return (ApiKind.RESPONSES,)
+        case ApiSelection.MESSAGES:
+            return (ApiKind.MESSAGES,)
+
+
+def main(
+    base_url: Annotated[str, typer.Argument(help="不含 /v1 的 Base URL")],
+    api_key: Annotated[str, typer.Argument(help="API Key")],
+    model: Annotated[str, typer.Argument(help="模型名称")],
+    prompt: Annotated[str, typer.Option("--prompt", "-p", help="测试提示词")] = "hi",
+    api: Annotated[ApiSelection, typer.Option("--api", help="要测试的 API")] = ApiSelection.ALL,
+    stream: Annotated[bool, typer.Option("--stream/--no-stream", help="是否使用流式响应")] = False,
+) -> None:
+    config = RequestConfig(
+        base_url=base_url,
+        api_key=api_key,
+        model=model,
+        prompt=prompt,
+        stream=stream,
+    )
+    with create_client(stream) as client:
+        results = tuple(run_test(kind, config, client) for kind in selected_apis(api))
+    if not all(results):
+        raise typer.Exit(code=1)
+
+
+if __name__ == "__main__":
+    typer.run(main)

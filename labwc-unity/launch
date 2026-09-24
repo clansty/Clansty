@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ ${1:-} == --help ]]; then
+    printf '用法：launch /完整路径/Editor/Unity [Unity 参数...]\n'
+    exit 0
+fi
+if [[ $# == 0 || ! -x $1 ]]; then
+    printf '需要一个可执行的 Unity 程序路径。\n' >&2
+    exit 2
+fi
+
+editor=$1
+shift
+script_dir=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
+for argument in "$@"; do
+    case "$argument" in
+        -version|--version|-help|--help|-batchmode|-nographics)
+            exec "$editor" "$@"
+            ;;
+    esac
+done
+
+runtime=$(mktemp -d /tmp/unity-labwc.XXXXXXXX)
+trap 'rm -rf -- "$runtime"' EXIT
+
+# 由 Bash 还原参数，避免 labwc 的命令解析改变空格、引号或空参数。
+{
+    printf 'exec '
+    printf '%q ' "$editor" "$@"
+    printf '\n'
+} > "$runtime/session"
+
+WLR_BACKENDS=wayland WLR_WL_OUTPUTS=1 LABWC_UPDATE_ACTIVATION_ENV=0 \
+    labwc --config-dir "$script_dir/config" \
+    --title 'Unity Editor' --session "/usr/bin/bash $runtime/session"

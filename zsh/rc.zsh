@@ -10,6 +10,7 @@ export SUDOEDITOR="nvim"
 
 # PATH
 [[ -d /opt/bin ]] && export PATH="/opt/bin:$PATH"
+[[ -d "$HOME/rc/bin" ]] && export PATH="$HOME/rc/bin:$PATH"
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 
@@ -59,6 +60,8 @@ alias codex='codex --dangerously-bypass-approvals-and-sandbox'
 alias claude='claude --dangerously-skip-permissions'
 
 alias tmuxa='tmux new -A -s main'
+alias kssh='kitten ssh'
+alias newkitty='systemd-run --user kitty --directory $PWD'
 
 # ZLE key bindings
 bindkey '^[[1;5D' backward-word

@@ -1,0 +1,237 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+用法：
+  openai-image-edit.sh --prompt PROMPT --image FILE [--image FILE ...] [选项]
+
+必需参数：
+  --prompt TEXT            编辑指令
+  --image FILE             源图片，可重复传入，最多 16 张
+
+选项：
+  --model MODEL            默认：gpt-image-1.5
+  --partial-images N       流式预览图数量，0 到 3，默认：3
+  --size SIZE              默认：auto
+  --quality QUALITY        默认：auto
+  --background MODE        默认：auto
+  --output-format FORMAT   png、webp 或 jpeg，默认：png
+  --output-dir DIR         图片输出目录，默认：image-edit-output
+  --dump-json FILE         将 multipart 请求体的等价 JSON 表示写入 FILE；传 - 输出到 stdout
+  --dump-only              只 dump，不调用 API（必须同时指定 --dump-json）
+  --api-base URL           默认：$OPENAI_BASE_URL 或 https://api.openai.com/v1
+  -h, --help               显示帮助
+
+环境变量：
+  OPENAI_API_KEY           OpenAI API Key；--dump-only 时不需要
+  OPENAI_BASE_URL          可选 API base URL
+
+示例：
+  ./openai-image-edit.sh \
+    --prompt '把两件商品放进一个白色礼盒' \
+    --image product-1.png \
+    --image product-2.png \
+    --dump-json request-body.json
+EOF
+}
+
+die() {
+  printf '错误：%s\n' "$1" >&2
+  exit 2
+}
+
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || die "缺少命令：$1"
+}
+
+dump_request_json() (
+  local destination=$1
+  local temp_dir manifest next_manifest encoded image mime_type
+
+  temp_dir=$(mktemp -d)
+  trap 'rm -rf -- "$temp_dir"' EXIT
+  manifest="$temp_dir/request.json"
+
+  jq -n \
+    --arg model "$model" \
+    --arg prompt "$prompt" \
+    --arg size "$size" \
+    --arg quality "$quality" \
+    --arg background "$background" \
+    --arg output_format "$output_format" \
+    --argjson partial_images "$partial_images" \
+    '{
+      _request_content_type: "multipart/form-data",
+      _note: "这是 multipart 请求体的等价 JSON 表示；image[].data_base64 在实际请求中以二进制文件 part 发送。",
+      model: $model,
+      prompt: $prompt,
+      image: [],
+      stream: true,
+      partial_images: $partial_images,
+      size: $size,
+      quality: $quality,
+      background: $background,
+      output_format: $output_format
+    }' >"$manifest"
+
+  for image in "${images[@]}"; do
+    encoded="$temp_dir/image.b64"
+    next_manifest="$temp_dir/request.next.json"
+    base64 <"$image" | tr -d '\r\n' >"$encoded"
+    mime_type=$(file --brief --mime-type -- "$image")
+    jq \
+      --arg filename "$(basename -- "$image")" \
+      --arg content_type "$mime_type" \
+      --rawfile data_base64 "$encoded" \
+      '.image += [{
+        filename: $filename,
+        content_type: $content_type,
+        data_base64: $data_base64
+      }]' "$manifest" >"$next_manifest"
+    mv -- "$next_manifest" "$manifest"
+  done
+
+  if [[ $destination == - ]]; then
+    cat "$manifest"
+  else
+    cp -- "$manifest" "$destination"
+    printf '请求体 JSON 已写入：%s\n' "$destination" >&2
+  fi
+)
+
+parse_stream() {
+  local line data event_type index output_path
+
+  while IFS= read -r line; do
+    line=${line%$'\r'}
+    [[ $line == data:* ]] || {
+      [[ -z $line || $line == event:* ]] || printf '%s\n' "$line" >&2
+      continue
+    }
+
+    data=${line#data:}
+    data=${data# }
+    event_type=$(jq -r '.type // empty' <<<"$data") || {
+      printf '无法解析 SSE data：%s\n' "$data" >&2
+      return 1
+    }
+
+    case $event_type in
+      image_edit.partial_image)
+        index=$(jq -r '.partial_image_index' <<<"$data")
+        printf -v output_path '%s/partial-%02d.%s' "$output_dir" "$index" "$output_format"
+        jq -r '.b64_json' <<<"$data" | base64 --decode >"$output_path"
+        printf '收到预览图：%s\n' "$output_path" >&2
+        ;;
+      image_edit.completed)
+        output_path="$output_dir/final.$output_format"
+        jq -r '.b64_json' <<<"$data" | base64 --decode >"$output_path"
+        printf '最终图片：%s\n' "$output_path" >&2
+        jq 'del(.b64_json)' <<<"$data"
+        ;;
+      *)
+        jq 'del(.b64_json)' <<<"$data"
+        ;;
+    esac
+  done
+}
+
+prompt=''
+model='gpt-image-1.5'
+partial_images=3
+size='auto'
+quality='auto'
+background='auto'
+output_format='png'
+output_dir='image-edit-output'
+dump_json=''
+dump_only=false
+api_base=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+images=()
+
+while (($#)); do
+  case $1 in
+    --prompt | --image | --model | --partial-images | --size | --quality | --background | --output-format | --output-dir | --dump-json | --api-base)
+      (($# >= 2)) || die "$1 缺少值"
+      option=$1
+      value=$2
+      shift 2
+      case $option in
+        --prompt) prompt=$value ;;
+        --image) images+=("$value") ;;
+        --model) model=$value ;;
+        --partial-images) partial_images=$value ;;
+        --size) size=$value ;;
+        --quality) quality=$value ;;
+        --background) background=$value ;;
+        --output-format) output_format=$value ;;
+        --output-dir) output_dir=$value ;;
+        --dump-json) dump_json=$value ;;
+        --api-base) api_base=$value ;;
+      esac
+      ;;
+    --dump-only)
+      dump_only=true
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *) die "未知参数：$1" ;;
+  esac
+done
+
+[[ -n $prompt ]] || die '必须提供 --prompt'
+((${#images[@]} >= 1 && ${#images[@]} <= 16)) || die '必须提供 1 到 16 个 --image'
+[[ $partial_images =~ ^[0-3]$ ]] || die '--partial-images 必须是 0 到 3'
+[[ $output_format == png || $output_format == webp || $output_format == jpeg ]] || die '--output-format 必须是 png、webp 或 jpeg'
+
+for image in "${images[@]}"; do
+  [[ -f $image && -r $image ]] || die "源图片不可读：$image"
+done
+
+require_command jq
+require_command base64
+
+if [[ -n $dump_json ]]; then
+  require_command file
+  dump_request_json "$dump_json"
+fi
+
+if $dump_only; then
+  [[ -n $dump_json ]] || die '--dump-only 必须同时指定 --dump-json'
+  exit 0
+fi
+
+[[ -n ${OPENAI_API_KEY:-} ]] || die '未设置 OPENAI_API_KEY'
+require_command curl
+mkdir -p -- "$output_dir"
+api_base=${api_base%/}
+
+curl_args=(
+  --fail-with-body
+  --silent
+  --show-error
+  --no-buffer
+  --request POST
+  "$api_base/images/edits"
+  --header "Authorization: Bearer $OPENAI_API_KEY"
+  --header 'Accept: text/event-stream'
+  --form "model=$model"
+  --form "prompt=$prompt"
+  --form 'stream=true'
+  --form "partial_images=$partial_images"
+  --form "size=$size"
+  --form "quality=$quality"
+  --form "background=$background"
+  --form "output_format=$output_format"
+)
+
+for image in "${images[@]}"; do
+  curl_args+=(--form "image[]=@$image")
+done
+
+curl "${curl_args[@]}" | parse_stream

@@ -35,11 +35,13 @@
     window-rule {
         match title="Hold on..."
         open-floating true
+        open-focused false
     }
 
     window-rule {
         match title="Starting Unity..."
         open-floating true
+        open-focused false
     }
 
     window-rule {
@@ -47,6 +49,12 @@
         open-floating true
         open-focused false   // 打开时不抢焦点
         focus-ring { off; }   // 去掉聚焦时 niri 画的高亮环
+    }
+
+    window-rule {
+        match app-id="wechat-devtools"
+        open-floating false
+        open-focused false   // 打开时不抢焦点
     }
 
     window-rule {
@@ -84,3 +92,6 @@
         place-within-backdrop true
     }
 
+debug {
+    strict-new-window-focus-policy
+}

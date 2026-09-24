@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+MODEL="gpt-5.6-luna"
+DEFAULT_QUERY="OpenAI latest news"
+
+usage() {
+  cat <<'EOF'
+用法：
+  ~/alpha-search-test [上游 Base URL] [搜索内容]
+
+示例：
+  ~/alpha-search-test https://api.openai.com/v1
+  ~/alpha-search-test https://proxy.example.com "OpenAI GPT-5.6 news"
+
+API Key 会通过隐藏输入读取。也可以设置 ALPHA_SEARCH_API_KEY 环境变量。
+EOF
+}
+
+fail() {
+  printf '失败：%s\n' "$1" >&2
+  exit 1
+}
+
+trim() {
+  local value="$1"
+  value="${value#"${value%%[![:space:]]*}"}"
+  value="${value%"${value##*[![:space:]]}"}"
+  printf '%s' "$value"
+}
+
+for command_name in curl jq; do
+  command -v "$command_name" >/dev/null 2>&1 || fail "缺少依赖：$command_name"
+done
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if (( $# > 2 )); then
+  usage >&2
+  exit 2
+fi
+
+base_url="${1:-}"
+if [[ -z "$base_url" ]]; then
+  read -r -p '上游 Base URL [https://api.openai.com/v1]：' base_url
+  base_url="${base_url:-https://api.openai.com/v1}"
+fi
+base_url="$(trim "$base_url")"
+[[ "$base_url" =~ ^https?:// ]] || fail "Base URL 必须以 http:// 或 https:// 开头"
+base_url="${base_url%/}"
+
+case "$base_url" in
+  */v1/alpha/search|*/alpha/search)
+    endpoint="$base_url"
+    ;;
+  */v1)
+    endpoint="$base_url/alpha/search"
+    ;;
+  *)
+    endpoint="$base_url/v1/alpha/search"
+    ;;
+esac
+
+query="${2:-$DEFAULT_QUERY}"
+query="$(trim "$query")"
+[[ -n "$query" ]] || fail "搜索内容不能为空"
+
+# API Key 不接受位置参数，避免暴露在 shell history 和进程列表中。
+api_key="${ALPHA_SEARCH_API_KEY:-}"
+if [[ -z "$api_key" ]]; then
+  read -r -s -p 'API Key：' api_key
+  printf '\n'
+fi
+api_key="$(trim "$api_key")"
+[[ -n "$api_key" ]] || fail "API Key 不能为空"
+
+request_id="search-$(date +%s)-$$"
+request_body="$({
+  jq -n \
+    --arg id "$request_id" \
+    --arg model "$MODEL" \
+    --arg query "$query" \
+    '{
+      id: $id,
+      model: $model,
+      input: $query,
+      commands: {
+        search_query: [{q: $query}],
+        response_length: "short"
+      },
+      settings: {
+        search_context_size: "medium",
+        allowed_callers: ["direct"],
+        external_web_access: true
+      },
+      max_output_tokens: 2500
+    }'
+})" || fail "无法生成请求 JSON"
+
+# 使用临时文件保存响应，避免响应体和 HTTP 状态码互相污染。
+response_file="$(mktemp)" || fail "无法创建临时文件"
+trap 'rm -f "$response_file"' EXIT
+
+printf '请求：POST %s\n' "$endpoint"
+printf '模型：%s\n' "$MODEL"
+printf '搜索：%s\n' "$query"
+
+http_status="$({
+  curl --silent --show-error \
+    --connect-timeout 10 \
+    --max-time 120 \
+    --output "$response_file" \
+    --write-out '%{http_code}' \
+    --request POST \
+    --header "Authorization: Bearer $api_key" \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --data "$request_body" \
+    "$endpoint"
+})"
+curl_status=$?
+
+if (( curl_status != 0 )); then
+  fail "网络请求失败（curl 退出码 $curl_status）"
+fi
+
+if ! jq empty "$response_file" >/dev/null 2>&1; then
+  printf 'HTTP 状态：%s\n' "$http_status" >&2
+  printf '响应不是合法 JSON：\n' >&2
+  sed -n '1,40p' "$response_file" >&2
+  exit 1
+fi
+
+if [[ "$http_status" =~ ^2[0-9][0-9]$ ]] && ! jq -e '.error != null' "$response_file" >/dev/null; then
+  printf '成功：HTTP %s\n' "$http_status"
+  printf 'output：%s\n' "$(jq -r '.output // "（响应中没有 output 字段）"' "$response_file")"
+  printf '结构化结果数：%s\n' "$(jq -r 'if (.results | type) == "array" then (.results | length) else 0 end' "$response_file")"
+  exit 0
+fi
+
+error_message="$(jq -r '.error.message // .message // empty' "$response_file")"
+printf '失败：HTTP %s\n' "$http_status" >&2
+if [[ -n "$error_message" ]]; then
+  printf '原因：%s\n' "$error_message" >&2
+else
+  jq . "$response_file" >&2
+fi
+exit 1

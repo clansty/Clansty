@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 保留 Hub 选中的版本，同时从软链接目标定位公共启动器。
+editor_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+script_dir=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
+exec "$script_dir/launch" "$editor_dir/Unity.real" "$@"
