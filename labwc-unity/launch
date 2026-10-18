@@ -21,14 +21,46 @@ for argument in "$@"; do
     esac
 done
 
+for command in labwc timeout wl-copy wl-paste xclip; do
+    if ! command -v "$command" >/dev/null; then
+        printf '缺少命令：%s\n' "$command" >&2
+        exit 2
+    fi
+done
+if [[ -z ${WAYLAND_DISPLAY:-} ]]; then
+    printf '需要在 Wayland 会话中运行。\n' >&2
+    exit 2
+fi
+outer_wayland_display=$WAYLAND_DISPLAY
+
 runtime=$(mktemp -d /tmp/unity-labwc.XXXXXXXX)
 trap 'rm -rf -- "$runtime"' EXIT
 
 # 由 Bash 还原参数，避免 labwc 的命令解析改变空格、引号或空参数。
 {
-    printf 'exec '
+    printf 'clipboard_bridge_pid=\n'
+    printf 'x11_clipboard_bridge_pid=\n'
+    printf 'cleanup() {\n'
+    printf '    if [[ -n ${clipboard_bridge_pid:-} ]]; then\n'
+    printf '        kill "$clipboard_bridge_pid" 2>/dev/null || true\n'
+    printf '        wait "$clipboard_bridge_pid" 2>/dev/null || true\n'
+    printf '    fi\n'
+    printf '    if [[ -n ${x11_clipboard_bridge_pid:-} ]]; then\n'
+    printf '        kill "$x11_clipboard_bridge_pid" 2>/dev/null || true\n'
+    printf '        wait "$x11_clipboard_bridge_pid" 2>/dev/null || true\n'
+    printf '    fi\n'
+    printf '}\n'
+    printf 'trap cleanup EXIT INT TERM HUP\n'
+    printf '%q %q &\n' "$script_dir/clipboard-bridge" "$outer_wayland_display"
+    printf 'clipboard_bridge_pid=$!\n'
+    printf 'if [[ -n ${DISPLAY:-} ]]; then\n'
+    printf '    %q %q &\n' "$script_dir/x11-clipboard-bridge" "$outer_wayland_display"
+    printf '    x11_clipboard_bridge_pid=$!\n'
+    printf 'fi\n'
     printf '%q ' "$editor" "$@"
     printf '\n'
+    printf 'status=$?\n'
+    printf 'exit "$status"\n'
 } > "$runtime/session"
 
 WLR_BACKENDS=wayland WLR_WL_OUTPUTS=1 LABWC_UPDATE_ACTIVATION_ENV=0 \

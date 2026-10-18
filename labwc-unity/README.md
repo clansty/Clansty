@@ -2,7 +2,7 @@
 
 Hub 留在 niri；每次启动一个 Editor 都创建一个独立的嵌套 labwc。Editor 退出后，该 labwc 自动退出。这里只处理启动隔离，不配置分数缩放。
 
-依赖：Bash、支持 XWayland 和 `--session` 的 labwc，以及外层 Wayland 会话。
+依赖：Bash、支持 XWayland 和 `--session` 的 labwc、`wl-clipboard`、`xclip`，以及外层 Wayland 会话。
 
 ## 直接试运行
 
@@ -42,8 +42,9 @@ Hub 留在 niri；每次启动一个 Editor 都创建一个独立的嵌套 labwc
 
 - 从 Hub 打开两个不同项目，应得到两个独立的 labwc 窗口。
 - 关闭其中一个 Editor，另一个 Editor 和外层 Hub 应保持运行。
+- 在外层应用和 Unity 之间双向复制、粘贴，剪贴板内容应同步。
 - 检查 Add Component 输入、面板拖拽及进度窗口的焦点行为。
 
 专用配置放在 `config/`，不启动桌面面板，也不更新外层 D-Bus/systemd 激活环境。关闭整个 labwc 窗口会终止它提供的显示会话，建议正常退出 Editor。
 
-交付时仅完成 shell 语法检查；尚未替换任何 Editor 入口，也未进行图形运行测试。
+启动器会同时建立 Wayland 剪贴板桥和 X11 剪贴板桥。桥只同步非空内容，读取失败或清空事件不会覆盖另一侧。Unity 的 Xwayland 剪贴板按文本同步；Wayland 侧每次只能提供一种 MIME 类型，富文本、图片或文件等复合内容会降级为其中一种格式。

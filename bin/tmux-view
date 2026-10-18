@@ -1,0 +1,22 @@
+#!/bin/sh
+# 开一个「视图」会话：与主会话共享同一批 window（session group），但各自记住自己看哪个
+# window，client 一断开就自动回收。ssh / kitty tab 关掉后不会留下多余的 session。
+set -eu
+
+group=${1:-main}
+
+# 上次连接异常断开（网络静默中断，tmux 收不到 tty EOF）留下的视图会话先清掉。
+# 只动主会话所在 group 里「没有任何 client」的会话，主会话自己和有 client 的会话不受影响。
+tmux list-sessions -F '#{session_name}:#{session_group}:#{session_attached}' 2>/dev/null |
+    awk -F: -v g="$group" '$2 == g && $1 != g && $3 == 0 { print $1 }' |
+    while read -r s; do tmux kill-session -t "$s" || true; done
+
+# 主会话不存在（比如 tmux server 刚重启）时，这次连接负责把它建出来
+if ! tmux has-session -t "$group" 2>/dev/null; then
+    exec tmux new-session -s "$group"
+fi
+
+# new-session 不带 -d：会话一创建就是 attached 状态。若先建好再设选项，中间那一小段
+# detached 的时间足够 destroy-unattached 把会话回收掉。
+# 用 \; 串联，让 set-option 落在刚建出来的那个会话上（此时它就是当前 client 的会话）。
+exec tmux new-session -t "$group" \; set-option destroy-unattached on

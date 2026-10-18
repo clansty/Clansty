@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+if [[ ${1:-} == --help ]]; then
+    printf '用法：x11-clipboard-bridge 外层 WAYLAND_DISPLAY\n' >&2
+    exit 0
+fi
+if [[ $# != 1 || -z ${DISPLAY:-} ]]; then
+    printf '需要 X11 DISPLAY 和外层 WAYLAND_DISPLAY。\n' >&2
+    exit 2
+fi
+
+outer_display=$1
+for command in timeout wl-copy wl-paste xclip; do
+    if ! command -v "$command" >/dev/null; then
+        printf '缺少命令：%s\n' "$command" >&2
+        exit 2
+    fi
+done
+
+state_dir=$(mktemp -d "${XDG_RUNTIME_DIR:-/tmp}/unity-labwc-x11-clipboard.XXXXXXXX")
+cleanup() {
+    rm -rf -- "$state_dir"
+}
+trap cleanup EXIT
+trap 'exit 0' INT TERM HUP
+
+# 嵌套 labwc 的 Xwayland 剪贴板不会进入内层 Wayland，因此直接桥接 X11。
+x11_now=$state_dir/x11.now
+wayland_now=$state_dir/wayland.now
+x11_last=$state_dir/x11.last
+wayland_last=$state_dir/wayland.last
+: > "$x11_last"
+: > "$wayland_last"
+
+read_x11() {
+    if timeout 1 xclip -selection clipboard -out -target UTF8_STRING > "$x11_now" 2>/dev/null; then
+        return 0
+    fi
+    timeout 1 xclip -selection clipboard -out > "$x11_now" 2>/dev/null || true
+}
+
+read_wayland() {
+    timeout 1 env WAYLAND_DISPLAY="$outer_display" \
+        wl-paste --no-newline --type text > "$wayland_now" 2>/dev/null || true
+}
+
+copy_to_x11() {
+    xclip -selection clipboard -in -target UTF8_STRING < "$1"
+}
+
+copy_to_wayland() {
+    env WAYLAND_DISPLAY="$outer_display" wl-copy --type text/plain < "$1"
+}
+
+while true; do
+    read_x11
+    read_wayland
+
+    if [[ ! -s $x11_now && ! -s $wayland_now ]]; then
+        sleep 0.2
+        continue
+    fi
+
+    if cmp -s -- "$x11_now" "$wayland_now"; then
+        cp -- "$x11_now" "$x11_last"
+        cp -- "$wayland_now" "$wayland_last"
+    else
+        x11_changed=false
+        wayland_changed=false
+        cmp -s -- "$x11_now" "$x11_last" || x11_changed=true
+        cmp -s -- "$wayland_now" "$wayland_last" || wayland_changed=true
+
+        source=
+        if [[ $x11_changed == true && -s $x11_now ]]; then
+            source=$x11_now
+        elif [[ $wayland_changed == true && -s $wayland_now ]]; then
+            source=$wayland_now
+        elif [[ -s $x11_now ]]; then
+            source=$x11_now
+        elif [[ -s $wayland_now ]]; then
+            source=$wayland_now
+        else
+            sleep 0.2
+            continue
+        fi
+
+        if [[ $source == "$x11_now" ]]; then
+            copy_to_wayland "$x11_now"
+        else
+            copy_to_x11 "$wayland_now"
+        fi
+        cp -- "$source" "$x11_last"
+        cp -- "$source" "$wayland_last"
+    fi
+
+    sleep 0.2
+done

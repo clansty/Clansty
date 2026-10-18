@@ -17,7 +17,7 @@ binds {
     Mod+I             hotkey-overlay-title="OpenCode Web"         { spawn-sh "microsoft-edge-stable --app=http://127.0.0.1:4096"; }
 
     // Please choose your own file manager.
-    Mod+E             hotkey-overlay-title="Nautilus"             { spawn "nautilus"; }
+    Mod+E             hotkey-overlay-title="Nautilus"             { spawn-sh "nautilus -w"; }
 
     // ─── Media Controls ───
     XF86AudioRaiseVolume              hotkey-overlay-title="音量+"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }

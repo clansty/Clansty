@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    printf '用法：clipboard-bridge 外层 WAYLAND_DISPLAY\n' >&2
+}
+
+script_path=$(readlink -f -- "${BASH_SOURCE[0]}")
+
+# wl-clipboard 2.3 不提供事件 MIME，按 wl-paste 的优先级从当前类型里选。
+select_mime() {
+    local candidate type
+    local -a types=()
+    while IFS= read -r type; do
+        types+=("$type")
+    done < <(timeout 2 wl-paste --list-types 2>/dev/null)
+
+    for candidate in 'text/plain;charset=utf-8' 'text/plain'; do
+        for type in "${types[@]}"; do
+            if [[ $type == "$candidate" ]]; then
+                printf '%s\n' "$candidate"
+                return 0
+            fi
+        done
+    done
+    for type in "${types[@]}"; do
+        if [[ $type == text/* ]]; then
+            printf '%s\n' "$type"
+            return 0
+        fi
+    done
+    if (( ${#types[@]} > 0 )); then
+        printf '%s\n' "${types[0]}"
+        return 0
+    fi
+    return 1
+}
+
+if [[ ${1:-} == --forward ]]; then
+    [[ $# == 3 ]] || exit 2
+    target_display=$2
+    state_dir=$3
+    lock_dir=$state_dir/lock
+    data=$(mktemp)
+    source_data=$(mktemp)
+    target_data=$(mktemp)
+    cleanup() {
+        rm -f -- "$data" "$source_data" "$target_data"
+        rmdir -- "$lock_dir" 2>/dev/null || true
+    }
+    trap cleanup EXIT
+
+    for ((attempt = 0; attempt < 250; attempt++)); do
+        if mkdir -- "$lock_dir" 2>/dev/null; then
+            break
+        fi
+        sleep 0.02
+    done
+    if [[ ! -d $lock_dir ]]; then
+        printf '等待剪贴板锁超时。\n' >&2
+        exit 1
+    fi
+
+    cat > "$data"
+
+    if [[ ${CLIPBOARD_STATE:-data} == nil || ${CLIPBOARD_STATE:-data} == clear ]] ||
+        [[ ! -s $data ]]; then
+        exit 0
+    fi
+    if ! mime=$(select_mime) ||
+        ! timeout 2 wl-paste --type "$mime" --no-newline > "$source_data" 2>/dev/null ||
+        ! cmp -s -- "$data" "$source_data"; then
+        exit 0
+    fi
+    if timeout 2 env WAYLAND_DISPLAY="$target_display" \
+        wl-paste --no-newline > "$target_data" 2>/dev/null &&
+        cmp -s -- "$data" "$target_data"; then
+        exit 0
+    fi
+    copy_options=(--type "$mime")
+    if [[ ${CLIPBOARD_STATE:-} == sensitive ]]; then
+        copy_options+=(--sensitive)
+    fi
+    env WAYLAND_DISPLAY="$target_display" wl-copy "${copy_options[@]}" < "$data"
+    exit 0
+fi
+
+if [[ ${1:-} == --help ]]; then
+    usage
+    exit 0
+fi
+if [[ $# != 1 ]]; then
+    usage
+    exit 2
+fi
+
+outer_display=$1
+inner_display=${WAYLAND_DISPLAY:-}
+if [[ -z $inner_display ]]; then
+    printf '缺少内层 WAYLAND_DISPLAY。\n' >&2
+    exit 2
+fi
+if [[ $outer_display == "$inner_display" ]]; then
+    printf '内外层 WAYLAND_DISPLAY 相同，拒绝建立剪贴板桥。\n' >&2
+    exit 2
+fi
+
+for command in timeout wl-copy wl-paste; do
+    if ! command -v "$command" >/dev/null; then
+        printf '缺少命令：%s\n' "$command" >&2
+        exit 2
+    fi
+done
+
+state_dir=$(mktemp -d "${XDG_RUNTIME_DIR:-/tmp}/unity-labwc-clipboard.XXXXXXXX")
+pids=()
+
+cleanup() {
+    local status=$?
+    trap - EXIT INT TERM HUP
+    if (( ${#pids[@]} > 0 )); then
+        kill "${pids[@]}" 2>/dev/null || true
+        wait "${pids[@]}" 2>/dev/null || true
+    fi
+    rm -rf -- "$state_dir"
+    exit "$status"
+}
+trap cleanup EXIT INT TERM HUP
+
+# stdout 指向普通文件时，wl-paste 会按扩展推断类型并过滤非文本剪贴板。
+env WAYLAND_DISPLAY="$outer_display" \
+    wl-paste --watch "$script_path" --forward "$inner_display" "$state_dir" >/dev/null 2>&1 &
+pids+=("$!")
+
+env WAYLAND_DISPLAY="$inner_display" \
+    wl-paste --watch "$script_path" --forward "$outer_display" "$state_dir" >/dev/null 2>&1 &
+pids+=("$!")
+
+wait -n "${pids[@]}"
