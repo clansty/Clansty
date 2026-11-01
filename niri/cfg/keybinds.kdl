@@ -17,7 +17,7 @@ binds {
     Mod+I             hotkey-overlay-title="OpenCode Web"         { spawn-sh "microsoft-edge-stable --app=http://127.0.0.1:4096"; }
 
     // Please choose your own file manager.
-    Mod+E             hotkey-overlay-title="Nautilus"             { spawn-sh "nautilus -w"; }
+    Mod+E             hotkey-overlay-title="Nautilus"             { spawn-sh "openxplorer --new-window"; }
 
     // ─── Media Controls ───
     XF86AudioRaiseVolume              hotkey-overlay-title="音量+"  allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
@@ -136,7 +136,9 @@ binds {
 
     // ─── Screenshots ───
     //CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim - | satty --filename - --fullscreen --copy-command wl-copy --initial-tool crop --actions-on-enter save-to-clipboard,exit --actions-on-double-click save-to-clipboard,exit --actions-on-right-click undo,exit"; }
-    CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim -g \"$(slurp)\" - | wl-copy -t image/png"; }
+    //CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "grim -g \"$(slurp)\" - | wl-copy -t image/png"; }
+    CTRL+SHIFT+D                        hotkey-overlay-title="截图" { spawn-sh "/usr/bin/FocusSnapS"; }
+    CTRL+SHIFT+S                        hotkey-overlay-title="截图" { spawn-sh "~/Projects/thirdparty/focus-snaps/target/release/FocusSnapS"; }
     Mod+Shift+D                         hotkey-overlay-title="screen-toolkit" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:screen-toolkit" "toggle"; }
     Mod+Shift+S                         hotkey-overlay-title="截图当前窗口" { screenshot-window write-to-disk=false; }
 
