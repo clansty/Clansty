@@ -15,6 +15,11 @@
     }
 
     window-rule {
+        match title=r"图片查看器"
+        open-floating true
+    }
+
+    window-rule {
         match title=r"Icalingua\+\+ Main"
         open-floating false
     }

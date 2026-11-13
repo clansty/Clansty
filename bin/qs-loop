@@ -1,0 +1,47 @@
+#!/bin/sh
+# quickshell 会卡死，而且 kill 之后还要几秒才真的退出，用户只能干等。
+# 观察到两个诱因：启动时会去 github 拉插件仓库（本机到 github.com:443 是被丢包的，
+# git 会卡在 TCP connect 上很久）；Sunshine 连接时切默认音频 sink 会命中它的
+# PipeWire 悬垂指针直接 SIGSEGV。
+# 所以这里做三件事：让 git 在慢速时尽快失败、加看门狗（真卡住就抓现场再 kill -9）、
+# 退出后清掉残留的 git 子进程。
+
+export GIT_HTTP_LOW_SPEED_LIMIT=1000
+export GIT_HTTP_LOW_SPEED_TIME=5
+
+LOG="${XDG_STATE_HOME:-$HOME/.local/state}/qs-watchdog.log"
+mkdir -p "${LOG%/*}"
+
+probe() { timeout 5 qs -c noctalia-shell ipc show >/dev/null 2>&1; }
+
+dump() {
+	{
+		echo "=== $(date '+%F %T') 无响应 pid=$1"
+		ps -o pid,stat,wchan:30,pcpu,rss -p "$1"
+		ps -L -o lwp,stat,wchan:30,pcpu,comm -p "$1"
+		# wchan 只说明卡在哪个函数，内核栈才能定位是 ZFS 还是 GPU 还是网络
+		for t in /proc/"$1"/task/*; do
+			echo "--- ${t##*/} $(cat "$t"/wchan 2>/dev/null)"
+			sudo -n cat "$t"/stack 2>/dev/null | head -8
+		done
+	} >>"$LOG" 2>&1
+}
+
+while :; do
+	qs -c noctalia-shell &
+	pid=$!
+	sleep 20 # 等它把 IPC 建起来，别误杀正常启动
+	while kill -0 "$pid" 2>/dev/null; do
+		if ! probe; then
+			sleep 3
+			probe && continue # 只是抖一下的不算卡死
+			dump "$pid"
+			kill -9 "$pid" 2>/dev/null
+			break
+		fi
+		sleep 4
+	done
+	wait "$pid" 2>/dev/null
+	pkill -9 -f "noctalia-plugins" 2>/dev/null # 别让卡在 github 上的 git 进程越攒越多
+	sleep 1
+done

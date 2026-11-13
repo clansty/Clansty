@@ -42,6 +42,13 @@ window-rule {
 }
 
 window-rule {
+    match title="Clansty" app-id="com.clansty.0wgram"
+    open-on-output "DP-3"
+    open-maximized-to-edges true
+    open-on-workspace "TG"
+}
+
+window-rule {
     match title="QQ"
     open-on-output "DP-3"
     open-maximized-to-edges true

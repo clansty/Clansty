@@ -1,7 +1,7 @@
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-sh-at-startup "qs -c noctalia-shell"
+    spawn-sh-at-startup "systemd-run --user --scope --unit=noctalia-shell -p MemoryMin=1G -p MemorySwapMax=0 -- /home/clansty/rc/bin/qs-loop"
     spawn-sh-at-startup "fcitx5 -d"
     spawn-sh-at-startup "wl-paste --watch cliphist store"
     spawn-sh-at-startup "sleep 3s && icalingua"
