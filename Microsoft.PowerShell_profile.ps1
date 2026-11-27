@@ -47,13 +47,23 @@ function ipa {
 }
 Set-Alias wg wg
 Set-Alias sctl systemctl
-Set-Alias sctlu "systemctl --user"
 Set-Alias jctl journalctl
-Set-Alias jctlu "journalctl --user-unit"
 Set-Alias apt apt
 Set-Alias dpkg dpkg
 Set-Alias df Get-Volume
 Set-Alias yay paru
+
+function codex {
+    & codex --dangerously-bypass-approvals-and-sandbox @args
+}
+
+function claude {
+    & claude --dangerously-skip-permissions @args
+}
+
+function agy {
+    & agy --dangerously-skip-permissions @args
+}
 
 # Git functions
 function gacp {
