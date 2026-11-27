@@ -58,6 +58,7 @@ alias pacman='s pacman'
 
 alias codex='codex --dangerously-bypass-approvals-and-sandbox'
 alias claude='claude --dangerously-skip-permissions'
+alias agy='agy --dangerously-skip-permissions'
 
 alias tmuxa='tmux new -A -s main'
 alias kssh='kitten ssh'
